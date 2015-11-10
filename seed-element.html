@@ -1,0 +1,282 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <seed-element></seed-element>
+
+Example:
+
+    <seed-element>
+      <h2>Hello seed-element</h2>
+    </seed-element>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="seed-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        color: rgba(0,0,0,.87);
+        font-family: Roboto;
+        font-weight: 300;
+      }
+      /* News */
+      .list-container {
+        height: 100%;
+        width: 100%;
+      }
+      .service-item {
+        @apply(--layout-vertical);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        padding-bottom: 5px;
+        padding-top: 5px;
+      }
+      .service-item-headers {
+        @apply(--layout-horizontal);
+      }
+      .service-item-header {
+
+      }
+      .service-item-header h3 {
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
+      .service-item-subheader span, .service-item-subheader div {
+        padding: 5px 10px 5px 0px;
+        color: #000;
+        opacity: 0.54;
+        font-size: 12px;
+        margin-top: -5px;
+      }
+      .service-counter {
+        font-size: 13px;
+        width: 22px;
+        height: 18px;
+        text-align: center;
+        margin-top: 1px;
+        margin-bottom: -6px;
+        margin-left: 10px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        background: #CCC;
+        padding-top: 2px;
+        color: #FFF;
+      }
+      .service-counter.new-message{
+        background: #4A90E2;
+        color: #FFF;
+        border: 1px solid rgba(19, 95, 184 0.8);
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      .service-item-body {
+        padding-bottom: 5px;
+      }
+    </style>
+
+    <!-- Start: html common -->
+    <div class="list-container">
+      <h2> Lista para loop abaixo:
+      </h2>
+
+      <iron-list items="{{document}}" as="item">
+        <template>
+          <div class="service-item">
+            <!-- div header -->
+            <div class="service-item-headers service-item-header">
+              <div class="flexchild"><h3>[[item.service]]</h3></div>
+              <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
+            </div>
+            <!-- div subheader -->
+            <div class="service-item-headers service-item-subheader">
+              <span>[[item.hashtag]]</span>
+              <!-- colocar um filter momentjs aqui quando integrado com meteor -->
+              <span>[[item.lastMessage.timestamp]]</span>
+            </div>
+            <!-- div message -->
+            <div class="service-item-body">[[item.lastMessage.body]]</div>
+          </div>
+        </template>
+      </iron-list>
+
+    </div>
+    <!-- End: html common -->
+  </template>
+
+  <script>
+    Polymer({
+      is: 'seed-element',
+
+      properties: {
+        /**
+         * `document` array content the items for iron-list.
+         */
+        document: {
+          type: Array,
+          value: [
+            {
+              "service":"Expresso Serpro",
+              "hashtag": "#ExpressoSerpro",
+              "opened_ticket": 6,
+              "lastMessage": {
+                "timestamp": 1447183053,
+                "body": "This is lastly updates this channel . A system \
+                  can have several issues bellow it but this item..."
+              }
+            },
+            {
+              "service":"Siscomex",
+              "hashtag": "#Siscomex",
+              "opened_ticket": 3,
+              "lastMessage": {
+                "timestamp": 1447183053,
+                "body": "Objectively customize orthogonal web-readiness  \
+                    without low-risk high-yield potentialities..."
+              }
+            },
+            {
+              "service":"BI Corporativo",
+              "hashtag": "#BICorporativo",
+              "opened_ticket": 2,
+              "lastMessage": {
+                "timestamp": 1447150210,
+                "body": "This is lastly updates this channel . A system \
+                  can have several issues bellow it but this item..."
+              }
+            },
+            {
+              "service":"SCCD Workflow",
+              "hashtag": "#SCCD",
+              "opened_ticket": 9,
+              "lastMessage": {
+                "timestamp": 1447150332,
+                "body": "Globally unleash quality paradigms rather than  \
+                      equity invested technologies. Energistically..."
+              }
+            },
+            {
+              "service":"IRPF",
+              "hashtag": "#IRPF",
+              "opened_ticket": 41,
+              "lastMessage": {
+                "timestamp": 1447183053,
+                "body": "Fora do ar novamente? Cadê a cafeteira?"
+
+              }
+            }
+          ]
+        },
+
+        /**
+         * `fancy` indicates that the element should don a monocle and tophat,
+         * while checking its pocket watch.
+         */
+        fancy: Boolean,
+
+        /**
+         * Describes the author of the element, but is really just an excuse to
+         * show off JSDoc annotations.
+         *
+         * @type {{name: string, image: string}}
+         */
+        author: {
+          type: Object,
+          // Use `value` to provide a default value for a property, by setting it
+          // on your element's prototype.
+          //
+          // If you provide a function, as we do here, Polymer will call that
+          // _per element instance_.
+          //
+          // We do that to ensure that each element gets its own copy of the
+          // value, rather than having it shared across all instances (via the
+          // prototype).
+          value: function() {
+            return {
+              name:  'Dimitri Glazkov',
+              image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
+            };
+          }
+        },
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+        // `ready` is called after all elements have been configured, but
+        // propagates bottom-up. This element's children are ready, but parents
+        // are not.
+        //
+        // This is the point where you should make modifications to the DOM (when
+        // necessary), or kick off any processes the element wants to perform.
+      },
+
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+      },
+
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+
+      // Element Behavior
+
+      /**
+       * Sometimes it's just nice to say hi.
+       *
+       * @param {string} greeting A positive greeting.
+       * @return {string} The full greeting.
+       */
+      sayHello: function(greeting) {
+        var response = greeting || 'Hello World!';
+        return 'seed-element says, ' + response;
+      },
+
+      /**
+       * The `seed-element-lasers` event is fired whenever `fireLasers` is called.
+       *
+       * @event seed-element-lasers
+       * @detail {{sound: String}}
+       */
+
+      /**
+       * Attempt to destroy this element's enemies with a beam of light!
+       *
+       * Or, at least, dispatch an event in the vain hope that someone else will
+       * do the zapping.
+       */
+      fireLasers: function() {
+        this.fire('seed-element-lasers', {sound: 'Pew pew!'});
+      }
+    });
+  </script>
+</dom-module>
