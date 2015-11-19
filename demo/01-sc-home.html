@@ -12,19 +12,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>sc-elements list of demos</title>
+    <title>sc-home Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../sc-home.html">
   </head>
   <body unresolved>
 
-    <p>Selecione um item:</p>
-    <ul>
-      <li><a href="01-sc-home.html">sc-home</a></li>
-      <li><a href="02-sc-feeds.html">sc-feeds</a></li>
-      <li><a href="03-sc-pages.html">sc-pages</a></li>
-    </ul>
+    <p>An example of <code>&lt;sc-home&gt;</code>:</p>
 
+    <sc-home>
+
+    </sc-home>
+
+    <script>
+      var seedElement = document.querySelector('sc-home');
+
+      /* seleciona e ouve
+      document.querySelector('#saybtn').addEventListener('click', function() {
+        alert(seedElement.sayHello('Hallo!'));
+      });
+
+      document.querySelector('#laserbtn').addEventListener('click', function() {
+        seedElement.fireLasers();
+      });
+      */
+      // ouvinto um emissor customizado
+      document.addEventListener("sc-home-lasers", function(e) {
+        console.log(e.detail.sound);
+      });
+
+    </script>
 
   </body>
 </html>

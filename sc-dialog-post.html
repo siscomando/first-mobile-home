@@ -1,0 +1,88 @@
+<link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+
+<dom-module id="sc-dialog-post">
+    <style>
+    :host: {
+      width: 100%;
+      height: 100%;
+    }
+    #dialogPost {
+      width: 100%;
+      height: 100%;
+    }
+    paper-button {
+      display: block;
+      margin-bottom: 24px;
+    }
+    paper-button.colorful {
+      color: #4285f4;
+    }
+    paper-button[raised].colorful {
+      background: #4285f4;
+      color: #fff;
+    }
+    .clearfix:after {
+         visibility: hidden;
+         display: block;
+         font-size: 0;
+         content: " ";
+         clear: both;
+         height: 0;
+    }
+    .clearfix { display: inline-block; }
+    /* start commented backslash hack \*/
+    * html .clearfix { height: 1%; }
+    .clearfix { display: block; }
+
+    </style>
+    <template>
+      <!-- paper-dialog -->
+      <paper-dialog id="dialogPost" entry-animation="scale-up-animation"
+                    exit-animation="fade-out-animation">
+        <h2>Compartilhe seu conhecimento... </h2>
+        <label>Você está em: {{currentSubject}}</label>
+          <paper-textarea id="textArea" label="Encontrei uma solução para..."
+          maxlength="250">
+          </paper-textarea>
+          <div class="clearfix"></div>
+          <div class="buttons">
+            <paper-button tabindex="0" raised class="custom" dialog-confirm autofocus><iron-icon icon="clear"></iron-icon>Cancel</paper-button>
+            <paper-button on-click="postSend" tabindex="0" raised class="colorful custom"><iron-icon icon="check"></iron-icon>Enviar</paper-button>
+          </div>
+      </paper-dialog>
+      <!-- /paper-dialog -->
+    </template>
+    <script>
+      Polymer({
+        is: 'sc-dialog-post',
+        properties: {
+          currentSubject: {
+            type: String,
+            value: "Expresso Serpro #XSerpro"
+          }
+        },
+        ready: function() {
+
+        },
+        attached: function() {
+          /* styling anything */
+          var dialogPost = this.$.dialogPost;
+          var textArea = this.$.textArea;
+          dialogPost.modal = true;
+          textArea.charCounter = true;
+        },
+        open: function() {
+          var dialogPost = this.$.dialogPost;
+          return dialogPost.open();
+        }
+      });
+
+    </script>
+</dom-module>

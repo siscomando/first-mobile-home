@@ -1,0 +1,113 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="sc-home.html">
+<link rel="import" href="sc-feeds.html">
+<link rel="import" href="sc-dialog-post.html">
+
+<dom-module id="sc-app">
+    <style>
+    :host {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    paper-drawer-panel {
+      --paper-drawer-panel-main-container: {
+        background-color: #FFF;
+        border-left: 1px solid rgba(0,0,0, 0.12);
+      };
+    }
+    #mainContent { /* the default is mobile */
+      width: 100%;
+      height: 100%;
+      padding-left: 5px;
+      padding-right: 5px;
+      overflow-y: scroll;
+    }
+    #homeList {
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    paper-fab {
+      display: block;
+      margin-bottom:24px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    paper-fab.green {
+      --paper-fab-background: #7ED321;
+      --paper-fab-keyboard-focus-background: var(--paper-green-900);
+    }
+    paper-fab.mainAction {
+      position: fixed;
+      float: right;
+      bottom: 0px;
+      right: 17px;
+    }
+    paper-toolbar {
+      --paper-toolbar-background: #135FB8;
+    }
+    @media (min-width: 768px) and (orientation: landscape) {
+      #mainContent {
+          padding-left: 20px;
+          padding-right: 40px;
+          width: 100%;
+          height: 100%;
+          overflow-y: scroll;
+      }
+    }
+
+    </style>
+
+    <template>
+      <paper-drawer-panel>
+          <paper-header-panel drawer>
+            <paper-toolbar>
+              <paper-icon-button icon="menu"></paper-icon-button>
+              <span class="title">Siscomando</span>
+              <paper-icon-button icon="refresh"></paper-icon-button>
+              <paper-icon-button icon="add">+</paper-icon-button>
+            </paper-toolbar>
+            <div id="homeList">
+              <sc-home></sc-home>
+            </div>
+          </paper-header-panel>
+          <paper-header-panel main>
+            <paper-toolbar>
+              <paper-icon-button icon="menu"></paper-icon-button>
+              <span class="title">Toolbar</span>
+              <paper-icon-button icon="refresh"></paper-icon-button>
+              <paper-icon-button icon="add">+</paper-icon-button>
+            </paper-toolbar>
+              <div id="mainContent">
+                <sc-feeds></sc-feeds>
+                <paper-fab on-click="handleClick" noink icon="create" title="create" class="green mainAction"></paper-fab>
+                <sc-dialog-post id="dialogPost"></sc-dialog-post>
+              </div>
+          </paper-header-panel>
+      </paper-drawer-panel>
+    </template>
+    <script>
+      Polymer({
+        is: "sc-app",
+        properties: {
+
+        },
+        ready: function() {
+
+        },
+        attached: function() {
+          /* styling anything */
+          var paperDrawerPanel = this.querySelector('paper-drawer-panel');
+          paperDrawerPanel.drawerWidth = "350px;";
+        },
+        handleClick: function() {
+          var dialogPost = this.$.dialogPost;
+          dialogPost.open();
+        }
+      });
+    </script>
+</dom-module>

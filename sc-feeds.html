@@ -1,0 +1,337 @@
+<!--
+@license
+Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
+-->
+
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-list/iron-list.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+
+
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <sc-feeds></sc-feeds>
+
+Example:
+
+    <sc-feeds>
+      <h2>Hello sc-feeds</h2>
+    </sc-feeds>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="sc-feeds">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        color: rgba(0,0,0,.75);
+        font-family: Roboto;
+        font-weight: 300;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+      }
+      /* News */
+      .list-container {
+        height: 100%;
+        width: 100%;
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      .message-container {
+        @apply(--layout-horizontal);
+        min-height: 80px;
+        max-height: 100px; /*limiter of the body */
+        overflow: hidden;
+      }
+      .left-side {
+        width: 80px;
+      }
+      .right-side {
+        @apply(--layout-flex);
+      }
+      .message-container-body {
+        @apply(--layout-vertical);
+        padding: 5px;
+      }
+      .message-header {
+        @apply(--layout-horizontal);
+        margin-bottom: 4px;
+        color: rgba(0, 0, 0, 0.38);
+        font-size: 0.85em;
+      }
+      .message-target {
+        color: #FFF;
+        font-size: 0.75em;
+        margin-left: 4px;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        padding: 1px 5px 1px 5px;
+        background: rgba(0,0,0,.20);
+      }
+      .message-body {
+        font-size: 1em;
+        line-height: 1.15em;
+      }
+      .message-source-assetreal {
+        position: relative;
+        background-color: #FFF; /* same color background page */
+        width: 55px;
+        height: 55px;
+        margin: 0 auto;
+        z-index: 1000;
+      }
+      .continuos-vertical-line {
+        position: relative;
+        width: 40px;
+        height: 102px; /* based in the limiter of the body */
+        border-right: 1px solid rgba(0,0,0,0.12);
+        float: left;
+        overflow: hidden;
+      }
+      .img-fake {
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        margin: 5px auto auto 5px;
+        overflow: hidden;
+      }
+      .img-fake img{
+        width: 45px;
+      }
+      /* helpers */
+      .circleBase {
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+      }
+
+    </style>
+
+    <!-- Start: html common -->
+    <div class="list-container">
+      <iron-list items="{{document}}" as="message">
+        <template>
+            <div class="message-container">
+              <!--  lado direito e lado esquerdo -->
+              <div class="message-source-image left-side">
+              <!-- a representacao grafica da origem podendo ser o avatar do
+              usuário ou um icone que representa um envio de e-mail nao identificado,
+              por exemplo -->
+                <div class="message-source-assetreal circleBase">
+                  <!-- um logica para icon-sprit outra para avatar -->
+                  <div class="img-fake circleBase">
+                  <!-- colocando o avatar para exemplo isso devera ser um
+                  field de documento se "existir ou for pessoa" ou um
+                  sprite-img para evitar requests. -->
+                  <img src="[[message.image]]">
+                  </div>
+                </div>
+                <div class="continuos-vertical-line"></div>
+              </div>
+              <div class="message-container-body right-side flexchild">
+                  <div class="message-header">
+                    <div class="message-source-label flexchild">
+                    <!-- quem ou o que iniciou -->
+                    [[message.announcer]]
+                    </div>
+                    <div class="message-timestamp">
+                    <!-- momento que a messagem foi criada  -->
+                    há [[message.timestamp]]
+                    </div>
+                  </div>
+                  <div>
+                    <div class="message-body">
+                      <!-- texto da mensagem -->
+                      [[message.body]]<span class="message-target">[[message.target]]</span>
+                    </div>
+
+                  </div>
+              </div>
+            </div>
+        </template>
+      </iron-list>
+
+    </div>
+    <!-- End: html common -->
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sc-feeds',
+
+      properties: {
+        /**
+         * `document` array content the items for iron-list.
+         */
+        document: {
+          type: Array,
+          value: [
+            {
+              "announcer": "horacio.moreira", // pessoal, sistema, robo
+              "timestamp": 1447183050,
+              "body": "Precisamos atualizar urgentemente o Siscomando",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
+              "target": "2015RI/00000045" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "marta.suply", // pessoal, sistema, robo
+              "timestamp": 1447183053,
+              "body": "Problemas de lentidão no e-social. ",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
+              "target": "2015RDP/00000005" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "presaclicked", // pessoal, sistema, robo
+              "timestamp": 1447183056,
+              "body": "Expresso Serpro com lentidão no acesso Web.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
+              "target": "2015RI/00000145" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "japaness", // pessoal, sistema, robo
+              "timestamp": 1447183063,
+              "body": "Estamos verificando o problema do e-social. Acompanhe aqui.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
+              "target": "2015RDP/00000005" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "japaness", // pessoal, sistema, robo
+              "timestamp": 1447183163,
+              "body": "O chamado foi encaminhado para a SUPOP. Já tá na mão do responsável.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
+              "target": "2015RDP/00000005" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "marta.suply", // pessoal, sistema, robo
+              "timestamp": 1447183153,
+              "body": "A @japaness já deu uma olhada e encaminhou o chamado.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
+              "target": "2015RDP/00000005" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "horacio.moreira", // pessoal, sistema, robo
+              "timestamp": 1447183240,
+              "body": "Os entregáveis já foram produzidos. Agora vamos implementar \
+                em ambiente controlado para em seguida subir para a produção \
+                nos servidores da SUPCD.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
+              "target": "2015RI/00000045" // _id or pk da proxima informacao
+            },
+            {
+              "announcer": "presaclicked", // pessoal, sistema, robo
+              "timestamp": 1447183256,
+              "body": "Encaminhado para @fabio.link em Porto Alegre. O mesmo disse que \
+                  vai implementar uma rotina para evitar o problema se repetir.",
+              "has_avatar": true,
+              "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
+              "target": "2015RI/00000145" // _id or pk da proxima informacao
+            },
+          ]
+        },
+
+        /**
+         * `fancy` indicates that the element should don a monocle and tophat,
+         * while checking its pocket watch.
+         */
+        fancy: Boolean,
+
+        /**
+         * Describes the author of the element, but is really just an excuse to
+         * show off JSDoc annotations.
+         *
+         * @type {{name: string, image: string}}
+         */
+        author: {
+          type: Object,
+          // Use `value` to provide a default value for a property, by setting it
+          // on your element's prototype.
+          //
+          // If you provide a function, as we do here, Polymer will call that
+          // _per element instance_.
+          //
+          // We do that to ensure that each element gets its own copy of the
+          // value, rather than having it shared across all instances (via the
+          // prototype).
+          value: function() {
+            return {
+              name:  'Horacio Ibrahim',
+              image: 'http://github.com/horacioibrahim',
+            };
+          }
+        },
+      },
+
+      // Element Lifecycle
+
+      ready: function() {
+        // `ready` is called after all elements have been configured, but
+        // propagates bottom-up. This element's children are ready, but parents
+        // are not.
+        //
+        // This is the point where you should make modifications to the DOM (when
+        // necessary), or kick off any processes the element wants to perform.
+      },
+
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+      },
+
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+
+      // Element Behavior
+
+      /**
+       * Sometimes it's just nice to say hi.
+       *
+       * @param {string} greeting A positive greeting.
+       * @return {string} The full greeting.
+       */
+      sayHello: function(greeting) {
+        var response = greeting || 'Hello World!';
+        return 'sc-feeds says, ' + response;
+      },
+
+      /**
+       * The `sc-feeds-lasers` event is fired whenever `fireLasers` is called.
+       *
+       * @event sc-feeds-lasers
+       * @detail {{sound: String}}
+       */
+
+      /**
+       * Attempt to destroy this element's enemies with a beam of light!
+       *
+       * Or, at least, dispatch an event in the vain hope that someone else will
+       * do the zapping.
+       */
+      fireLasers: function() {
+        this.fire('sc-feeds-lasers', {sound: 'Pew pew!'});
+      }
+    });
+  </script>
+</dom-module>
