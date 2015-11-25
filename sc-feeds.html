@@ -77,8 +77,9 @@ Example:
         background: rgba(0,0,0,.20);
       }
       .message-body {
-        font-size: 1em;
-        line-height: 1.15em;
+        line-height: 19px;
+        font-size: 16px;
+        color: rgba(0,0,0,0.74);
       }
       .message-source-assetreal {
         position: relative;
@@ -117,7 +118,8 @@ Example:
 
     <!-- Start: html common -->
     <div class="list-container">
-      <iron-list items="{{document}}" as="message">
+      <!-- <iron-ajax url="{{url}}" last-response="{{documents}}" auto></iron-ajax> -->
+      <iron-list items="{{documents}}" as="message">
         <template>
             <div class="message-container">
               <!--  lado direito e lado esquerdo -->
@@ -171,7 +173,7 @@ Example:
         /**
          * `document` array content the items for iron-list.
          */
-        document: {
+        documents: {
           type: Array,
           value: [
             {
@@ -244,6 +246,13 @@ Example:
           ]
         },
 
+        /**
+        * `url` to get list of posts (from people, systems, etc.)
+        */
+        url: {
+          type: String,
+          value: '/messages/all' /* get all feeds */
+        },
         /**
          * `fancy` indicates that the element should don a monocle and tophat,
          * while checking its pocket watch.

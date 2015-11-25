@@ -1,12 +1,17 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="sc-home.html">
 <link rel="import" href="sc-feeds.html">
 <link rel="import" href="sc-dialog-post.html">
+<link rel="import" href="sc-profile.html">
 
 <dom-module id="sc-app">
     <style>
@@ -20,17 +25,36 @@
       };
     }
     #mainContent { /* the default is mobile */
+      @apply(--layout-vertical);
       width: 100%;
       height: 100%;
+    }
+    #mainContent .rowOne {
+      @apply(--layout-flex);
+      overflow-y: scroll;
       padding-left: 5px;
-      padding-right: 5px;
-      overflow-y: scroll;
+      padding-right: 8px;
+      padding-top: 10px;
+      padding-bottom: 133px;
     }
-    #homeList {
+    #mainContent .rowTwo {
+
+    }
+    iron-pages div.homeList {
       width: 100%;
       height: 100%;
       overflow-y: scroll;
+      padding-bottom: 65px;
     }
+    iron-pages {
+      overflow-y: scroll;
+      height: 100%;
+    }
+    neon-animated-pages {
+      @apply(--layout-flex);
+      height: 100%;
+    }
+
     paper-fab {
       display: block;
       margin-bottom:24px;
@@ -50,13 +74,65 @@
     paper-toolbar {
       --paper-toolbar-background: #135FB8;
     }
+    paper-toolbar.drawerToolbar {
+      @apply(--layout-horizontal);
+    }
+    paper-toolbar div.drawerMenu {
+      width: 40px;
+    }
+    paper-toolbar span.title {
+      @apply(--layout-flex)
+    }
+    paper-input.short {
+      width: 100%;
+    }
+    #inputWithButton {
+      display: none;
+    }
+    paper-input#inputWithButton {
+      --paper-input-container-color: rgba(255,255,255,0.54);
+      --paper-input-container-focus-color: rgba(255,255,255,0.54);
+      --paper-input-container-input-color: rgba(255,255,255,0.86);
+      margin-bottom: 30px;
+    }
+    paper-textarea#inputLikeZap {
+        --paper-input-container: {
+          background-color: rgba(255,255,255,0.8);
+          padding-left: 10px;
+          padding-right: 6px;
+          border-top: 1px solid rgba(0,0,0,.10);
+        }
+    }
+    .bottomInput {
+      position: absolute;
+      float: left;
+      background: #F5F8F8;
+      width: 100%;
+      bottom: 0;
+    }
+    paper-icon-button.clearWhite {
+      color: #CCC;
+      --paper-icon-button-ink-color:#CCC;
+    }
+    paper-icon-button.clearBtn {
+      position: absolute;
+      float: right;
+      right: 0;
+    }
+    #menuBack {
+      display: none;
+    }
     @media (min-width: 768px) and (orientation: landscape) {
       #mainContent {
-          padding-left: 20px;
-          padding-right: 40px;
+          @apply(--layout-vertical);
           width: 100%;
           height: 100%;
           overflow-y: scroll;
+      }
+      #mainContent .rowOne {
+        padding-left: 20px;
+        padding-right: 40px;
+        padding-bottom: 120px;
       }
     }
 
@@ -65,27 +141,59 @@
     <template>
       <paper-drawer-panel>
           <paper-header-panel drawer>
-            <paper-toolbar>
-              <paper-icon-button icon="menu"></paper-icon-button>
+            <paper-toolbar class="drawerToolbar">
+              <div class="drawerMenu">
+                <paper-icon-button id="menuMenu" on-tap="showProfile" icon="menu"></paper-icon-button>
+                <paper-icon-button id="menuBack" on-tap="backHome" icon="chevron-left"></paper-icon-button>
+              </div>
               <span class="title">Siscomando</span>
-              <paper-icon-button icon="refresh"></paper-icon-button>
+              <!--<paper-icon-button icon="refresh"></paper-icon-button>
               <paper-icon-button icon="add">+</paper-icon-button>
+              -->
             </paper-toolbar>
-            <div id="homeList">
-              <sc-home></sc-home>
-            </div>
+
+            <neon-animated-pages id="pagesDrawer" selected="[[selectedPage]]">
+                <sc-home></sc-home>
+                <sc-profile></sc-profile>
+            </neon-animated-pages>
+
           </paper-header-panel>
           <paper-header-panel main>
             <paper-toolbar>
-              <paper-icon-button icon="menu"></paper-icon-button>
-              <span class="title">Toolbar</span>
-              <paper-icon-button icon="refresh"></paper-icon-button>
-              <paper-icon-button icon="add">+</paper-icon-button>
+              <!-- backHome eh paliativo, o ideal eh colocar quando fechar o drawer sempre voltar para home. -->
+              <paper-icon-button icon="inbox" on-tap="backHome" paper-drawer-toggle></paper-icon-button>
+
+              <span id="mainTitle" class="title">{{titleSection}}</span>
+              <!-- hide/show -->
+              <paper-icon-button id="btnSearch" on-tap="toggleClick" icon="search"></paper-icon-button>
+              <!-- hide/show -->
+              <paper-input flex class="short" label="pesquise qualquer coisa..." id="inputWithButton">
+                <paper-icon-button suffix on-tap="clearInput"
+                    icon="clear" alt="clear" title="clear" tabindex="0">
+                </paper-icon-button>
+              </paper-input>
+
+              <!-- <paper-icon-button icon="add">+</paper-icon-button>-->
             </paper-toolbar>
               <div id="mainContent">
-                <sc-feeds></sc-feeds>
+                <div class="rowOne">
+                  <sc-feeds></sc-feeds>
+                </div>
+                <div class="rowTwo">
+                  <div class="bottomInput">
+                    <!-- <paper-icon-button class="clearWhite clearBtn" suffix on-tap="clearInputLikeZap"
+                        icon="clear" alt="clear" title="clear" tabindex="0">
+                    </paper-icon-button>
+                      -->
+                    <paper-textarea flex class="short" label="O que você pode resolver..." id="inputLikeZap">
+                    </paper-textarea>
+                  </div>
+                </div>
+
+                <!--
                 <paper-fab on-click="handleClick" noink icon="create" title="create" class="green mainAction"></paper-fab>
                 <sc-dialog-post id="dialogPost"></sc-dialog-post>
+                -->
               </div>
           </paper-header-panel>
       </paper-drawer-panel>
@@ -94,19 +202,77 @@
       Polymer({
         is: "sc-app",
         properties: {
-
+          titleSection: {
+            type: String,
+            value: 'All messages'
+          },
+          selectedPage: {
+            type: Number,
+            value: 0
+          }
         },
         ready: function() {
-
+          var self = this;
+          this.addEventListener('show-profile', function() {
+            self.selectedPage = 1;
+            self.$.menuMenu.style.display = 'none';
+            self.$.menuBack.style.display = 'block';
+          });
+          this.addEventListener('back-home', function() {
+            self.selectedPage = 0;
+            self.$.menuMenu.style.display = 'block';
+            self.$.menuBack.style.display = 'none';
+          });
         },
         attached: function() {
           /* styling anything */
           var paperDrawerPanel = this.querySelector('paper-drawer-panel');
-          paperDrawerPanel.drawerWidth = "350px;";
+          paperDrawerPanel.drawerWidth = "350px";
+          this.updateScroll();
         },
         handleClick: function() {
           var dialogPost = this.$.dialogPost;
           dialogPost.open();
+        },
+        toggleClick: function() {
+          // show or hide input and show or hide icon
+          var btnSearch = this.$.btnSearch;
+          var inputWithButton = this.$.inputWithButton;
+          var mainTitle = this.$.mainTitle;
+
+          if (btnSearch.style.display == 'none') {
+            btnSearch.style.display = 'block';
+            inputWithButton.style.display = 'none';
+            mainTitle.style.display = 'block';
+          } else {
+            btnSearch.style.display = 'none';
+            inputWithButton.style.display = 'block';
+            mainTitle.style.display = 'none';
+          }
+        },
+        clearInput: function() {
+          this.$.inputWithButton.value = '';
+          this.toggleClick();
+        },
+        clearInputLikeZap: function () {
+          this.$.inputLikeZap.value = '';
+        },
+        /**
+        * `updateScroll` move scroll from bottom to up (inverse behavior)
+        */
+        updateScroll: function () {
+          var mainContent = this.$.mainContent;
+          var rowOne = mainContent.querySelector('.rowOne');
+          rowOne.scrollTop = rowOne.scrollHeight;
+        },
+        afterAddedContent: function() {
+          // actions after updates "on the fly"
+        },
+        showProfile: function() {
+          this.fire('show-profile');
+        },
+        backHome: function() {
+          this.fire('back-home');
         }
       });
     </script>

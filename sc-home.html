@@ -6,6 +6,11 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/iron-list/iron-list.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
+<link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
+
 
 
 <!--
@@ -35,11 +40,13 @@ Example:
         font-family: Roboto;
         font-weight: 300;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
+        height: 100%;
       }
       /* News */
       .list-container {
         height: 100%;
         width: 100%;
+        overflow-y: scroll;
       }
       .service-item {
         @apply(--layout-vertical);
@@ -48,6 +55,23 @@ Example:
         padding-top: 5px;
         padding-left: 8px;
         padding-right: 6px;
+        cursor: pointer;
+        height: 90px;
+        text-overflow:ellipsis;
+      }
+      /* hover for desktop */
+      .service-item.selected {
+        background-color: rgba(19,95,184,.75);
+        color: white !important;
+      }
+      .service-item.selected .service-item-subheader span {
+        color: white;
+      }
+      .service-item.selected .service-item-body {
+        color: rgba(255, 255, 255, 0.34);
+      }
+      .service-item.selected .new-message {
+        background-color: #7ED321;
       }
       .service-item-headers {
         @apply(--layout-horizontal);
@@ -58,6 +82,8 @@ Example:
       .service-item-header h3 {
         margin-top: 2px;
         margin-bottom: 2px;
+        font-size: 1em;
+        font-weight: 300;
       }
       .service-item-subheader span, .service-item-subheader div {
         padding: 5px 10px 5px 0px;
@@ -91,30 +117,60 @@ Example:
         @apply(--layout-flex);
       }
       .service-item-body {
+        overflow: hidden;
+        font-size: 14px;
+        line-height: 17px;
         padding-bottom: 5px;
         color: rgba(0,0,0,0.38);
       }
+      .avatarBox {
+        float:left;
+        width: 32px;
+        height: 32px;
+        -webkit-border-radius: 6px; /* Can also be 55px */
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        margin-right: 6px;
+       }
+      .avatarBox img {
+        width: 32px;
+        height: 32px;
+        -webkit-border-radius: 6px; /* Can also be 50px */
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        opacity: 0.8;
+       }
     </style>
-
+    <iron-ajax
+      url="http://localhost:8081/demo/data_home.json"
+      on-response="ajaxResponse"
+      handle-as="json"
+      auto></iron-ajax>
     <!-- Start: html common -->
     <div class="list-container">
-      <iron-list items="{{document}}" as="item">
+      <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
         <template>
-          <div class="service-item">
-            <!-- div header -->
-            <div class="service-item-headers service-item-header">
-              <div class="flexchild"><h3>[[item.service]]</h3></div>
-              <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
+            <div tabindex="0" on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
+              <!-- div header -->
+              <div class="service-item-headers service-item-header">
+                <div class="flexchild"><h3>[[item.service]]</h3></div>
+                <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
+              </div>
+              <!-- div subheader -->
+              <div class="service-item-headers service-item-subheader">
+                <span>[[item.hashtag]]</span>
+                <!-- colocar um filter momentjs aqui quando integrado com meteor -->
+                <span>[[item.lastMessage.timestamp]]</span>
+              </div>
+              <!-- div message -->
+              <div class="service-item-body">
+                <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
+                  <div class="avatarBox">
+                    <img src="[[item.lastMessage.user.avatar]]">
+                  </div>
+                </template>
+                [[item.lastMessage.body]]</div>
             </div>
-            <!-- div subheader -->
-            <div class="service-item-headers service-item-subheader">
-              <span>[[item.hashtag]]</span>
-              <!-- colocar um filter momentjs aqui quando integrado com meteor -->
-              <span>[[item.lastMessage.timestamp]]</span>
-            </div>
-            <!-- div message -->
-            <div class="service-item-body">[[item.lastMessage.body]]</div>
-          </div>
         </template>
       </iron-list>
 
@@ -125,106 +181,30 @@ Example:
   <script>
     Polymer({
       is: 'sc-home',
-
+      behaviors: [Polymer.NeonAnimatableBehavior],
       properties: {
+        animationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'slide-from-left-animation',
+                node: this
+              },
+              'exit': {
+                name: 'slide-left-animation',
+                node: this
+              }
+            }
+          }
+        },
+        selectedItem: {
+          type: Object
+        },
         /**
          * `document` array content the items for iron-list.
          */
-        document: {
-          type: Array,
-          value: [
-            {
-              "service":"Expresso Serpro",
-              "hashtag": "#ExpressoSerpro",
-              "opened_ticket": 6,
-              "lastMessage": {
-                "timestamp": 1447183053,
-                "body": "This is lastly updates this channel . A system \
-                  can have several issues bellow it but this item..."
-              }
-            },
-            {
-              "service":"Siscomex",
-              "hashtag": "#Siscomex",
-              "opened_ticket": 3,
-              "lastMessage": {
-                "timestamp": 1447183053,
-                "body": "Objectively customize orthogonal web-readiness  \
-                    without low-risk high-yield potentialities..."
-              }
-            },
-            {
-              "service":"BI Corporativo",
-              "hashtag": "#BICorporativo",
-              "opened_ticket": 2,
-              "lastMessage": {
-                "timestamp": 1447150210,
-                "body": "This is lastly updates this channel . A system \
-                  can have several issues bellow it but this item..."
-              }
-            },
-            {
-              "service":"SCCD Workflow",
-              "hashtag": "#SCCD",
-              "opened_ticket": 9,
-              "lastMessage": {
-                "timestamp": 1447150332,
-                "body": "Globally unleash quality paradigms rather than  \
-                      equity invested technologies. Energistically..."
-              }
-            },
-            {
-              "service":"IRPF",
-              "hashtag": "#IRPF",
-              "opened_ticket": 41,
-              "lastMessage": {
-                "timestamp": 1447183053,
-                "body": "Fora do ar novamente? Cadê a cafeteira?"
-
-              }
-            },
-            {
-              "service":"e-Social",
-              "hashtag": "#eSocial",
-              "opened_ticket": 11,
-              "lastMessage": {
-                "timestamp": 1447183153,
-                "body": "Nova versão não está imprimindo café expresso. E tb \
-                    está sem pão de queijo"
-              }
-            },
-            {
-              "service":"Dataware House Receita",
-              "hashtag": "#DWReceita",
-              "opened_ticket": 1,
-              "lastMessage": {
-                "timestamp": 1447183163,
-                "body": "A receita não consegue gerar relatórios sobre descontos \
-                    dados aos contribuintes."
-
-              }
-            },
-            {
-              "service":"Expresso ICMBIO",
-              "hashtag": "#XIcmbio",
-              "opened_ticket": 21,
-              "lastMessage": {
-                "timestamp": 1447183083,
-                "body": "Problemas de autenticação com token, sem token, com \
-                    digital, sem digital"
-              }
-            },
-            {
-              "service":"Spekx",
-              "hashtag": "#Spekx",
-              "opened_ticket": 111,
-              "lastMessage": {
-                "timestamp": 1447183183,
-                "body": "Spekx indisponível. Eu já olhei e não é o banco de dados \
-                    pode ser cafeteira."
-              }
-            }
-          ]
+        documents: {
+          type: Object,
         },
 
         /**
@@ -232,31 +212,6 @@ Example:
          * while checking its pocket watch.
          */
         fancy: Boolean,
-
-        /**
-         * Describes the author of the element, but is really just an excuse to
-         * show off JSDoc annotations.
-         *
-         * @type {{name: string, image: string}}
-         */
-        author: {
-          type: Object,
-          // Use `value` to provide a default value for a property, by setting it
-          // on your element's prototype.
-          //
-          // If you provide a function, as we do here, Polymer will call that
-          // _per element instance_.
-          //
-          // We do that to ensure that each element gets its own copy of the
-          // value, rather than having it shared across all instances (via the
-          // prototype).
-          value: function() {
-            return {
-              name:  'Dimitri Glazkov',
-              image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-            };
-          }
-        },
       },
 
       // Element Lifecycle
@@ -285,36 +240,40 @@ Example:
         //
         // Use this to clean up anything you did in `attached`.
       },
-
-      // Element Behavior
-
-      /**
-       * Sometimes it's just nice to say hi.
-       *
-       * @param {string} greeting A positive greeting.
-       * @return {string} The full greeting.
-       */
-      sayHello: function(greeting) {
-        var response = greeting || 'Hello World!';
-        return 'sc-home says, ' + response;
+      // Ajax response
+      ajaxResponse: function(event, response, third) {
+          this.documents = event.detail.response;
       },
-
-      /**
-       * The `sc-home-lasers` event is fired whenever `fireLasers` is called.
+      // Selection Behavior
+      selectItem: function(e) {
+         this._selectItem(e);
+       },
+       /* `_selectItem` select or unselect item
        *
-       * @event sc-home-lasers
-       * @detail {{sound: String}}
        */
-
-      /**
-       * Attempt to destroy this element's enemies with a beam of light!
-       *
-       * Or, at least, dispatch an event in the vain hope that someone else will
-       * do the zapping.
-       */
-      fireLasers: function() {
-        this.fire('sc-home-lasers', {sound: 'Pew pew!'});
+      _selectItem: function(e){
+        if (this.$.itemsList.selectedItem == e.model.item) {
+            // unselect
+            this._unselect(e);
+            this._computedClass(false);
+        } else {
+            this.$.itemsList.selectItem(e.model.item);    
+        }
+      },
+      _unselect: function(e) {
+         this.$.itemsList.deselectItem(e.model.item);
+       },
+      _computedClass: function(isSelected) {
+        var classes = 'service-item';
+        if (isSelected) {
+          classes += ' selected';
+        }
+        return classes;
+      },
+      _getAriaLabel: function(item, selected) {
+        return selected ? 'Deselect ' + item.hashtag : 'Select ' + item.hashtag;
       }
+
     });
   </script>
 </dom-module>
