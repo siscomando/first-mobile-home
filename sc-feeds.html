@@ -6,6 +6,9 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/iron-list/iron-list.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
+
 
 
 <!--
@@ -115,11 +118,15 @@ Example:
       }
 
     </style>
-
+    <iron-ajax id="ajax"
+      url=""
+      on-response="ajaxResponse"
+      handle-as="json"
+      auto></iron-ajax>
     <!-- Start: html common -->
     <div class="list-container">
-      <!-- <iron-ajax url="{{url}}" last-response="{{documents}}" auto></iron-ajax> -->
-      <iron-list items="{{documents}}" as="message">
+    <fade-in-animation>
+      <iron-list id="itemsList" items="{{documents.items}}" as="message">
         <template>
             <div class="message-container">
               <!--  lado direito e lado esquerdo -->
@@ -160,7 +167,7 @@ Example:
             </div>
         </template>
       </iron-list>
-
+    </fade-in-animation>
     </div>
     <!-- End: html common -->
   </template>
@@ -168,90 +175,29 @@ Example:
   <script>
     Polymer({
       is: 'sc-feeds',
-
+      behaviors: [Polymer.NeonAnimationRunnerBehavior],
       properties: {
+        animationConfig: {
+          value: function() {
+            return {
+              // provided by neon-animation/animations/scale-down-animation.html
+              name: 'fade-in-animation',
+              node: this,
+              timing: 700
+            }
+          }
+        },
         /**
          * `document` array content the items for iron-list.
          */
         documents: {
-          type: Array,
-          value: [
-            {
-              "announcer": "horacio.moreira", // pessoal, sistema, robo
-              "timestamp": 1447183050,
-              "body": "Precisamos atualizar urgentemente o Siscomando",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
-              "target": "2015RI/00000045" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "marta.suply", // pessoal, sistema, robo
-              "timestamp": 1447183053,
-              "body": "Problemas de lentidão no e-social. ",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
-              "target": "2015RDP/00000005" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "presaclicked", // pessoal, sistema, robo
-              "timestamp": 1447183056,
-              "body": "Expresso Serpro com lentidão no acesso Web.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
-              "target": "2015RI/00000145" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "japaness", // pessoal, sistema, robo
-              "timestamp": 1447183063,
-              "body": "Estamos verificando o problema do e-social. Acompanhe aqui.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
-              "target": "2015RDP/00000005" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "japaness", // pessoal, sistema, robo
-              "timestamp": 1447183163,
-              "body": "O chamado foi encaminhado para a SUPOP. Já tá na mão do responsável.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
-              "target": "2015RDP/00000005" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "marta.suply", // pessoal, sistema, robo
-              "timestamp": 1447183153,
-              "body": "A @japaness já deu uma olhada e encaminhou o chamado.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
-              "target": "2015RDP/00000005" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "horacio.moreira", // pessoal, sistema, robo
-              "timestamp": 1447183240,
-              "body": "Os entregáveis já foram produzidos. Agora vamos implementar \
-                em ambiente controlado para em seguida subir para a produção \
-                nos servidores da SUPCD.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
-              "target": "2015RI/00000045" // _id or pk da proxima informacao
-            },
-            {
-              "announcer": "presaclicked", // pessoal, sistema, robo
-              "timestamp": 1447183256,
-              "body": "Encaminhado para @fabio.link em Porto Alegre. O mesmo disse que \
-                  vai implementar uma rotina para evitar o problema se repetir.",
-              "has_avatar": true,
-              "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
-              "target": "2015RI/00000145" // _id or pk da proxima informacao
-            },
-          ]
+          type: Object
         },
-
-        /**
-        * `url` to get list of posts (from people, systems, etc.)
-        */
-        url: {
-          type: String,
-          value: '/messages/all' /* get all feeds */
+        hashtag: {
+            type: String,
+            notify: true,
+            observer: '_hashtagChanged',
+            value: "",
         },
         /**
          * `fancy` indicates that the element should don a monocle and tophat,
@@ -288,12 +234,10 @@ Example:
       // Element Lifecycle
 
       ready: function() {
-        // `ready` is called after all elements have been configured, but
-        // propagates bottom-up. This element's children are ready, but parents
-        // are not.
-        //
-        // This is the point where you should make modifications to the DOM (when
-        // necessary), or kick off any processes the element wants to perform.
+          this._setUrl('all');
+          this.addEventListener('feeds-updated', function(){
+            this.playAnimation();
+          });
       },
 
       attached: function() {
@@ -311,35 +255,29 @@ Example:
         //
         // Use this to clean up anything you did in `attached`.
       },
-
-      // Element Behavior
-
-      /**
-       * Sometimes it's just nice to say hi.
-       *
-       * @param {string} greeting A positive greeting.
-       * @return {string} The full greeting.
-       */
-      sayHello: function(greeting) {
-        var response = greeting || 'Hello World!';
-        return 'sc-feeds says, ' + response;
+      // Ajax response
+      ajaxResponse: function(event) {
+          this.documents = event.detail.response;
+          this.fire('feeds-updated');
       },
-
-      /**
-       * The `sc-feeds-lasers` event is fired whenever `fireLasers` is called.
-       *
-       * @event sc-feeds-lasers
-       * @detail {{sound: String}}
-       */
-
-      /**
-       * Attempt to destroy this element's enemies with a beam of light!
-       *
-       * Or, at least, dispatch an event in the vain hope that someone else will
-       * do the zapping.
-       */
-      fireLasers: function() {
-        this.fire('sc-feeds-lasers', {sound: 'Pew pew!'});
+      _setUrl: function(hashtag) {
+          var base_url = "http://192.168.1.102:8081/demo/data_feeds_";
+          var hashtag = hashtag ? hashtag : 'all';
+          var format = ".json"
+          var url = base_url + this._normalizeHashtag(hashtag) + format;
+          this.$.ajax.url = url;
+      }, 
+      _hashtagChanged: function() {
+          this._setUrl(this.hashtag);
+      },
+      _normalizeHashtag(hashtag) {
+          // lower case
+          var hashtag = hashtag.toLowerCase();
+          // remove #
+          if (hashtag.startsWith('#')) {
+              hashtag = hashtag.substr(1);
+          }
+          return hashtag;
       }
     });
   </script>

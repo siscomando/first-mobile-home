@@ -142,7 +142,7 @@ Example:
        }
     </style>
     <iron-ajax
-      url="http://localhost:8081/demo/data_home.json"
+      url="http://192.168.1.102:8081/demo/data_home.json"
       on-response="ajaxResponse"
       handle-as="json"
       auto></iron-ajax>
@@ -241,7 +241,7 @@ Example:
         // Use this to clean up anything you did in `attached`.
       },
       // Ajax response
-      ajaxResponse: function(event, response, third) {
+      ajaxResponse: function(event) {
           this.documents = event.detail.response;
       },
       // Selection Behavior
@@ -258,6 +258,7 @@ Example:
             this._computedClass(false);
         } else {
             this.$.itemsList.selectItem(e.model.item);    
+            this.fire('home-selected');
         }
       },
       _unselect: function(e) {
