@@ -20,7 +20,7 @@
     }
     paper-drawer-panel {
       --paper-drawer-panel-main-container: {
-        background-color: #FFF;
+        background-color: rgba(19,95,184,0.065);
         border-left: 1px solid rgba(0,0,0, 0.12);
       };
     }
@@ -177,7 +177,10 @@
             </paper-toolbar>
               <div id="mainContent">
                 <div class="rowOne">
-                  <sc-feeds id="mainFeeds"></sc-feeds>
+                    <neon-animated-pages id="pagesMain" selected="[[selectedPageFromMain]]">
+                        <sc-feeds id="mainFeeds"></sc-feeds>
+                        <sc-feeds id="feedsTicket"></sc-feeds>
+                    </neon-animated-pages>                    
                 </div>
                 <div class="rowTwo">
                   <div class="bottomInput">
@@ -209,6 +212,10 @@
           selectedPage: {
             type: Number,
             value: 0
+          },
+          selectedPageFromMain: {
+              type: Number,
+              value: 0
           }
         },
         ready: function() {
@@ -317,7 +324,7 @@
         **/
         backAllMessages: function() {
          // We basically to change hashtag from sc-feeds
-         var feeds = this.querySelector('sc-feeds');
+         var feeds = this.$.mainFeeds;
          feeds.hashtag = 'all';
          this.titleSection = 'All messages';
          this.toggleMainBtn();
