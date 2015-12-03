@@ -118,10 +118,11 @@ Example:
         text-align: right;
         /* opacity: 0; */
         width: 40px;
+        display: none;
       }
       .item-content {
         margin-left: 52px;
-        margin-right: 44px;
+        margin-right: 2px;
         vertical-align: top;
         min-height: 1.5em;
       }
@@ -178,7 +179,12 @@ Example:
         border-left: 4px solid #ddd;
       }
       @media (min-width: 768px) and (orientation: landscape) {
-
+        .item-actions {
+          display: block;
+        }
+        .item-content {
+          margin-right: 44px;
+        }
       }
     </style>
     <iron-ajax id="ajax"
