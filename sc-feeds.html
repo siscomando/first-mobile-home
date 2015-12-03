@@ -168,9 +168,14 @@ Example:
         -ms-user-select: text;
         user-select: text;
       }
-      marked-element p {
+      .markdown-html p {
         -webkit-margin-before: 0em;
         -webkit-margin-after: 0em;
+      }
+      .markdown-html blockquote {
+        padding: 0 15px;
+        color: #777;
+        border-left: 4px solid #ddd;
       }
       @media (min-width: 768px) and (orientation: landscape) {
 
@@ -205,10 +210,9 @@ Example:
                    <div class="item-details-timestamp"><span>[[_convertTimestamp(message.timestamp)]]</span></div>
                  </div>
                  <div class="item-text">
-                   [[message.body]]
-                   <!-- <marked-element markdown="[[message.body]]">
+                   <marked-element markdown="[[message.body]]">
                      <div class="markdown-html"></div>
-                   </marked-element>-->
+                   </marked-element>
                  </div>
                </div>
              </div>
