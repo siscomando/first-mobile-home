@@ -130,7 +130,7 @@
           overflow-y: scroll;
       }
       #mainContent .rowOne {
-        padding-left: 20px;
+        padding-left: 5px;
         padding-right: 40px;
         padding-bottom: 120px;
       }
@@ -180,7 +180,7 @@
                     <neon-animated-pages id="pagesMain" selected="[[selectedPageFromMain]]">
                         <sc-feeds id="mainFeeds"></sc-feeds>
                         <sc-feeds id="feedsTicket"></sc-feeds>
-                    </neon-animated-pages>                    
+                    </neon-animated-pages>
                 </div>
                 <div class="rowTwo">
                   <div class="bottomInput">
@@ -222,8 +222,8 @@
           var self = this;
           var feeds = this.$.mainFeeds;
           var home = this.$.home;
-          
-          // listens actions to view drawer    
+
+          // listens actions to view drawer
           this.addEventListener('show-profile', function() {
             self.selectedPage = 1;
             self.$.menuMenu.style.display = 'none';
@@ -244,7 +244,7 @@
             self.titleSection = feeds.hashtag;
             self.toggleMainBtn(true); // changes btn inbox to back (chevron)
             // optional
-            self.$.panel.closeDrawer(); 
+            self.$.panel.closeDrawer();
           });
         },
         attached: function() {
@@ -275,7 +275,7 @@
         },
         /** `toggleMainBtn` toggle inboxBtn or backAllMessagesBtn
         * @param `forward`: if `true` toggle disabled and only back
-        * btn is showed. 
+        * btn is showed.
         */
         toggleMainBtn: function (forward) {
           var inboxBtn = this.$.inboxBtn;
@@ -283,7 +283,7 @@
 
           if (forward === true) {
               inboxBtn.style.display = 'none';
-              backAllMessagesBtn.style.display = 'block';              
+              backAllMessagesBtn.style.display = 'block';
           } else {
               if (inboxBtn.style.display == 'none') {
                 inboxBtn.style.display = 'block';
@@ -291,8 +291,8 @@
               } else {
                 inboxBtn.style.display = 'none';
                 backAllMessagesBtn.style.display = 'block';
-              }               
-          }           
+              }
+          }
         },
         clearInput: function() {
           this.$.inputWithButton.value = '';
@@ -318,7 +318,7 @@
         backHome: function() {
           this.fire('back-home');
         },
-        /** `backAllMessages` go back to hashtag `all`. So backs 
+        /** `backAllMessages` go back to hashtag `all`. So backs
         * unselect if selected item in the sc-home and make query
         * to backend for all messages (last messages, for example).
         **/

@@ -11,6 +11,7 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-from-right-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-right-animation.html">
+<link rel="import" href="bower_components/marked-element/marked-element.html">
 
 
 
@@ -47,35 +48,102 @@ Example:
         height: 100%;
         width: 100%;
       }
-      .flexchild {
-        @apply(--layout-flex);
+
+      .message-item {
+        cursor: pointer;
       }
-      .message-container {
-        @apply(--layout-horizontal);
-        min-height: 80px;
-        max-height: 100px; /*limiter of the body */
-        overflow: hidden;
+      .message-item:hover {
+        background-color: rgba(19,95,184,0.015);
       }
-      .left-side {
-        width: 80px;
+      .message-item-container {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border-right: 2px solid transparent;
+        margin: .8em 12px 0;
+        padding-left: 16dp;
+        padding-left: 10px;
+        -webkit-transition-delay: 2s;
+        transition-delay: 2s;
+        -webkit-transition: 2s border linear,3s background-color linear;
+        transition: 2s border linear,3s background-color linear;
+        clear: both;
       }
-      .right-side {
-        @apply(--layout-flex);
+      .message-item-container.continued {
+        margin-top: 0;
+        margin-bottom: 0;
       }
-      .message-container-body {
-        @apply(--layout-vertical);
-        padding: 5px;
+      .message-item-container.continued .item-details {
+        display: none;
       }
-      .message-header {
-        @apply(--layout-horizontal);
-        margin-bottom: 4px;
-        color: rgba(0, 0, 0, 0.54);
-        font-size: 0.85em;
+      .message-item-container.continued .item-aside {
+        margin-top: 6px;
       }
-      .message-target {
-        color: #FFF;
-        font-size: 0.75em;
-        margin-left: 4px;
+      .message-item-container.continued .item-aside .avatar{
+        display: none;
+      }
+      .item-aside {
+        float: left;
+        margin-top: 2px;
+      }
+      .item-aside .avatar {
+        position: relative;
+        height: 30px;
+        width: 30px;
+        border-radius: 4px;
+        background-size: cover;
+      }
+      .item-aside .dispImage {
+        display: inline-block;
+        text-align: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        border-bottom: 2px solid transparent;
+      }
+      .item-aside .dispImage img {
+        width: 30px;
+        max-width: 30px;
+        border-radius: 4px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 30px;
+        border: none;
+        background-color: #eee;
+      }
+      .item-actions {
+        float: right;
+        text-align: right;
+        /* opacity: 0; */
+        width: 40px;
+      }
+      .item-content {
+        margin-left: 52px;
+        margin-right: 44px;
+        vertical-align: top;
+        min-height: 1.5em;
+      }
+      .item-details {}
+
+      .item-details-from {
+        vertical-align: middle;
+        display: inline-block;
+        cursor: pointer;
+        font-weight: 600;
+        margin-top: 2px;
+        opacity: .5;
+      }
+      .item-target {
+        margin-left: 10px;
+        vertical-align: middle;
+        display: inline-block;
+        margin-top: 2px;
+        opacity: .3;
+        font-size: .8em;
+        text-transform: uppercase;
+        color: #000;
         border-radius: 10px;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -83,44 +151,30 @@ Example:
         background: rgba(0,0,0,.20);
         cursor: pointer;
       }
-      .message-body {
-        line-height: 19px;
-        font-size: 16px;
-        color: rgba(0,0,0,0.74);
+      .item-details-timestamp {
+        vertical-align: middle;
+        display: inline-block;
+        color: #aaa;
+        float: right;
+        margin-top: 2px;
+        opacity: .7;
       }
-      .message-source-assetreal {
-        position: relative;
-         /* background-color: #FFF;same color background page */
-        width: 55px;
-        height: 55px;
-        margin: 0 auto;
-        z-index: 1000;
+      .item-text {
+        margin: 0;
+        padding: 0;
+        word-wrap: break-word;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
       }
-      .continuos-vertical-line {
-        position: relative;
-        width: 40px;
-        height: 102px; /* based in the limiter of the body */
-        border-right: 1px solid rgba(0,0,0,0.12);
-        float: left;
-        overflow: hidden;
+      marked-element p {
+        -webkit-margin-before: 0em;
+        -webkit-margin-after: 0em;
       }
-      .img-fake {
-        position: absolute;
-        width: 45px;
-        height: 45px;
-        margin: 5px auto auto 5px;
-        overflow: hidden;
-      }
-      .img-fake img{
-        width: 45px;
-      }
-      /* helpers */
-      .circleBase {
-        border-radius: 50%;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-      }
+      @media (min-width: 768px) and (orientation: landscape) {
 
+      }
     </style>
     <iron-ajax id="ajax"
       url=""
@@ -129,49 +183,38 @@ Example:
       auto></iron-ajax>
     <!-- Start: html common -->
     <div class="list-container">
-    <fade-in-animation>
       <iron-list id="itemsList" items="{{documents.items}}" as="message">
         <template>
-            <div class="message-container">
-              <!--  lado direito e lado esquerdo -->
-              <div class="message-source-image left-side">
-              <!-- a representacao grafica da origem podendo ser o avatar do
-              usuário ou um icone que representa um envio de e-mail nao identificado,
-              por exemplo -->
-                <div class="message-source-assetreal circleBase">
-                  <!-- um logica para icon-sprit outra para avatar -->
-                  <div class="img-fake circleBase">
-                  <!-- colocando o avatar para exemplo isso devera ser um
-                  field de documento se "existir ou for pessoa" ou um
-                  sprite-img para evitar requests. -->
-                  <img src="[[message.image]]">
-                  </div>
-                </div>
-                <div class="continuos-vertical-line"></div>
-              </div>
-              <div class="message-container-body right-side flexchild">
-                  <div class="message-header">
-                    <div class="message-source-label flexchild">
-                    <!-- quem ou o que iniciou -->
-                    [[message.announcer]]
-                    </div>
-                    <div class="message-timestamp">
-                    <!-- momento que a messagem foi criada  -->
-                    há [[message.timestamp]]
-                    </div>
-                  </div>
-                  <div>
-                    <div class="message-body">
-                      <!-- texto da mensagem -->
-                      [[message.body]]<span class="message-target" on-tap="_getGroupBy" data-args="[[message.target]]">[[message.target]]</span>
-                    </div>
-
-                  </div>
-              </div>
-            </div>
+           <div class="message-item">
+             <!-- class$="[[_computedClass(selected)]]" -->
+             <div class$="[[_computedClass(message.continued)]]">
+               <div class="item-aside">
+                 <div>
+                   <span>
+                     <div class="avatar dispImage">
+                       <img src$=[[message.image]]>
+                     </div>
+                   </span>
+                 </div>
+               </div>
+               <div class="item-actions"></div>
+               <div class="item-content">
+                 <div class="item-details">
+                   <div class="item-details-from">[[message.announcer]]</div>
+                   <div class="item-target">2015Ri/001244</div>
+                   <div class="item-details-timestamp"><span>[[_convertTimestamp(message.timestamp)]]</span></div>
+                 </div>
+                 <div class="item-text">
+                   [[message.body]]
+                   <!-- <marked-element markdown="[[message.body]]">
+                     <div class="markdown-html"></div>
+                   </marked-element>-->
+                 </div>
+               </div>
+             </div>
+           </div>
         </template>
       </iron-list>
-    </fade-in-animation>
     </div>
     <!-- End: html common -->
   </template>
@@ -243,22 +286,6 @@ Example:
             this.playAnimation();
           });
       },
-
-      attached: function() {
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
-      },
-
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
-      },
       // Ajax response
       ajaxResponse: function(event) {
           this.documents = event.detail.response;
@@ -287,6 +314,30 @@ Example:
       */
       _getGroupBy: function(e) {
         console.log(e.target.dataArgs);
+      },
+      _computedClass: function(isContinued) {
+        var classes = 'message-item-container';
+        if (isContinued) {
+          classes += ' continued';
+        }
+        return classes;
+      },
+      _convertTimestamp: function(unix_timestamp) {
+        // this code sample was copied from
+        // http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+        //
+        // Create a new JavaScript Date object based on the timestamp
+        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+        var date = new Date(unix_timestamp*1000);
+        // Hours part from the timestamp
+        var hours = date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        // var seconds = "0" + date.getSeconds();
+        // Will display time in 10:30:23 format
+        var formattedTime = hours + ':' + minutes.substr(-2);
+        return formattedTime;
       }
     });
   </script>
