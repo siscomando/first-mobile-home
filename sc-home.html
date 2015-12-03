@@ -239,8 +239,17 @@ Example:
             this.fire('home-selected');
         }
       },
+      unselect: function() {
+        this._unselect();
+      },
       _unselect: function(e) {
-         this.$.itemsList.deselectItem(e.model.item);
+        if (e) {
+            this.$.itemsList.deselectItem(e.model.item);
+        } else {
+            var item = this.$.itemsList.selectedItem;
+            this.$.itemsList.deselectItem(item);
+        }
+
        },
       _computedClass: function(isSelected) {
         var classes = 'service-item';

@@ -61,7 +61,7 @@ Example:
         border-right: 2px solid transparent;
         margin: .8em 12px 0;
         padding-left: 16dp;
-        padding-left: 10px;
+        padding-left: 0px;
         -webkit-transition-delay: 2s;
         transition-delay: 2s;
         -webkit-transition: 2s border linear,3s background-color linear;
@@ -118,10 +118,11 @@ Example:
         text-align: right;
         /* opacity: 0; */
         width: 40px;
+        display: none;
       }
       .item-content {
-        margin-left: 52px;
-        margin-right: 44px;
+        margin-left: 40px;
+        margin-right: 2px;
         vertical-align: top;
         min-height: 1.5em;
       }
@@ -150,6 +151,7 @@ Example:
         padding: 1px 5px 1px 5px;
         background: rgba(0,0,0,.20);
         cursor: pointer;
+        text-shadow: 2px 2px 2px rgba(255, 255, 255, 1)
       }
       .item-details-timestamp {
         vertical-align: middle;
@@ -178,7 +180,16 @@ Example:
         border-left: 4px solid #ddd;
       }
       @media (min-width: 768px) and (orientation: landscape) {
-
+        .message-item-container {
+          padding-left: 10px;
+        }
+        .item-actions {
+          display: block;
+        }
+        .item-content {
+          margin-right: 44px;
+          margin-left: 52px;
+        }
       }
     </style>
     <iron-ajax id="ajax"
@@ -188,9 +199,9 @@ Example:
       auto></iron-ajax>
     <!-- Start: html common -->
     <div class="list-container">
-      <iron-list id="itemsList" items="{{documents.items}}" as="message">
+      <iron-list id="itemsList" items="{{documents.items}}" as="message" selected-item="{{selectedItem}}">
         <template>
-           <div class="message-item">
+           <div on-tap="selectItem" class="message-item">
              <!-- class$="[[_computedClass(selected)]]" -->
              <div class$="[[_computedClass(message.continued)]]">
                <div class="item-aside">
@@ -206,7 +217,7 @@ Example:
                <div class="item-content">
                  <div class="item-details">
                    <div class="item-details-from">[[message.announcer]]</div>
-                   <div class="item-target">2015Ri/001244</div>
+                   <div class="item-target">[[message.target]]</div>
                    <div class="item-details-timestamp"><span>[[_convertTimestamp(message.timestamp)]]</span></div>
                  </div>
                  <div class="item-text">
@@ -237,6 +248,12 @@ Example:
               timing: 700
             }
           }
+        },
+        selectedItem: {
+          type: Object
+        },
+        previousSelectedItem: {
+          type: Object
         },
         /**
          * `document` array content the items for iron-list.
@@ -295,6 +312,8 @@ Example:
           this.documents = event.detail.response;
           this.fire('feeds-updated');
       },
+      /** mock function for development
+      */
       _setUrl: function(hashtag) {
           var base_url = "/demo/data_feeds_"; // #CHANGED: relative path
           var hashtag = hashtag ? hashtag : 'all';
@@ -342,6 +361,17 @@ Example:
         // Will display time in 10:30:23 format
         var formattedTime = hours + ':' + minutes.substr(-2);
         return formattedTime;
+      },
+      // Selection Behavior
+      selectItem: function(e) {
+         this._selectItem(e);
+       },
+       /* `_selectItem` select or unselect item
+       *
+       */
+      _selectItem: function(e){
+          this.$.itemsList.selectItem(e.model.message);
+          this.fire('feed-selected');
       }
     });
   </script>

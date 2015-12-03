@@ -179,7 +179,7 @@
                 <div class="rowOne">
                     <neon-animated-pages id="pagesMain" selected="[[selectedPageFromMain]]">
                         <sc-feeds id="mainFeeds"></sc-feeds>
-                        <sc-feeds id="feedsTicket"></sc-feeds>
+                        <!-- <sc-feeds id="feedsTicket" firedName="feedsTicket"></sc-feeds>-->
                     </neon-animated-pages>
                 </div>
                 <div class="rowTwo">
@@ -222,6 +222,7 @@
           var self = this;
           var feeds = this.$.mainFeeds;
           var home = this.$.home;
+          // var feedsTicket = this.$.feedsTicket;
 
           // listens actions to view drawer
           this.addEventListener('show-profile', function() {
@@ -237,6 +238,18 @@
           // listen if feeds was updated.
           feeds.addEventListener('feeds-updated', function(){
             self.updateScroll();
+          });
+          // listen if feeds item was selected
+          feeds.addEventListener('feed-selected', function(){
+            var item = this.$.itemsList.selectedItem;
+            if ('target_hashtag' in item) {
+              self.previousSelectedItem = feeds.hashtag;
+              feeds.hashtag = item.target_hashtag;
+              self.titleSection = feeds.hashtag
+              self.toggleMainBtn(true); // changes btn inbox to back (chevron)
+              // optional
+              self.$.panel.closeDrawer();
+            }
           });
           // listen home item was selected
           home.addEventListener('home-selected', function(){
@@ -325,9 +338,18 @@
         backAllMessages: function() {
          // We basically to change hashtag from sc-feeds
          var feeds = this.$.mainFeeds;
-         feeds.hashtag = 'all';
-         this.titleSection = 'All messages';
-         this.toggleMainBtn();
+         var home = this.$.home;
+         feeds.hashtag = this.previousSelectedItem;
+         if (this.previousSelectedItem) {
+            this.titleSection = this.previousSelectedItem;
+            this.previousSelectedItem = null;
+         } else {
+            this.titleSection = 'All';
+            feeds.hashtag = 'all';
+            this.toggleMainBtn();
+            home.unselect();
+        }
+
         // #main.paper-drawer-panel [paper-drawer-toggle]
         }
       });
