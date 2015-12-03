@@ -320,7 +320,6 @@ Example:
           var format = ".json"
           var url = base_url + this._normalizeHashtag(hashtag) + format;
           this.$.ajax.url = url;
-          console.log("debug: chaned url?")
       },
       _hashtagChanged: function() {
           this._setUrl(this.hashtag);
@@ -373,8 +372,6 @@ Example:
       _selectItem: function(e){
           this.$.itemsList.selectItem(e.model.message);
           this.fire('feed-selected');
-          console.log("feed selected debug - sc-feeds.html#381");
-          console.log(this.$.itemsList.selectedItem);
       }
     });
   </script>
