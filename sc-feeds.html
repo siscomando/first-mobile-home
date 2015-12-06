@@ -12,6 +12,8 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/animations/slide-from-right-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-right-animation.html">
 <link rel="import" href="bower_components/marked-element/marked-element.html">
+<link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
+
 
 
 
@@ -218,7 +220,8 @@ Example:
                  <div class="item-details">
                    <div class="item-details-from">[[message.announcer]]</div>
                    <div class="item-target">[[message.target]]</div>
-                   <div class="item-details-timestamp"><span>[[_convertTimestamp(message.timestamp)]]</span></div>
+                   <div class="item-details-timestamp">
+                     <span><sc-timeago datetime="[[_convertTimestamp(1447183053)]]"></sc-timeago></span></div>
                  </div>
                  <div class="item-text">
                    <marked-element markdown="[[message.body]]">
@@ -352,14 +355,18 @@ Example:
         // Create a new JavaScript Date object based on the timestamp
         // multiplied by 1000 so that the argument is in milliseconds, not seconds.
         var date = new Date(unix_timestamp*1000);
-        // Hours part from the timestamp
-        var hours = date.getHours();
+        var hours = "0" + date.getHours();
         // Minutes part from the timestamp
         var minutes = "0" + date.getMinutes();
         // Seconds part from the timestamp
-        // var seconds = "0" + date.getSeconds();
-        // Will display time in 10:30:23 format
-        var formattedTime = hours + ':' + minutes.substr(-2);
+        var seconds = "0" + date.getSeconds();
+        // Full year
+        var year = date.getFullYear();
+        var month = "0" + date.getMonth();
+        var day = "0" + date.getDay();
+        // YYYY-MM-DDT00:00:00
+
+        var formattedTime = year + '-' +  month.substr(-2) + '-' +  day.substr(-2) + 'T' + hours.substr(-2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + '.000Z';
         return formattedTime;
       },
       // Selection Behavior
