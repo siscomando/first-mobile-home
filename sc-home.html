@@ -12,8 +12,6 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
 <link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
 
-
-
 <!--
 An element providing a solution to no problem in particular.
 
@@ -142,6 +140,7 @@ Example:
         opacity: 0.8;
        }
     </style>
+
     <iron-ajax
       url="/demo/data_home.json"
       on-response="ajaxResponse"
@@ -151,7 +150,7 @@ Example:
     <div class="list-container">
       <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
         <template>
-            <div tabindex="0" on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
+            <div on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
               <!-- div header -->
               <div class="service-item-headers service-item-header">
                 <div class="flexchild"><h3>[[item.service]]</h3></div>
@@ -178,7 +177,7 @@ Example:
       </iron-list>
     </div>
     <!-- End: html common -->
-  </template>
+</template>
 
   <script>
     Polymer({
