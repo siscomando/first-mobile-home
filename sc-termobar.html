@@ -4,6 +4,20 @@
 
 <!-- app -->
 
+<!--
+  Usage:
+
+  <sc-termobar id="termobar"></sc-termobar>
+
+  Styling:
+  #termobar {
+    position: absolute;
+    right: 0;
+    float: right;
+    z-index: 999; /* optional turn on top */
+  }
+-->
+
 <dom-module id="sc-termobar">
 <template>
 <style>
@@ -14,9 +28,10 @@
     font-family: Roboto;
     font-weight: 300;
     height: 100%;
-    width: 100%;
+    width: 10px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: #13283b;
+    display: block;
   }
   #container {
     height: 100%;
@@ -24,40 +39,34 @@
     /* overflow: scroll; */
     position: absolute;
   }
-  .menuTab-container {
-    height: 100%;
-    width: 100%;
-    @apply(--layout-horizontal);
-  }
-  .placeholder-menu {
-    width: 100px;
-    background: #1e3345;
-  }
   .content {
     width: auto;
     @apply(--layout-flex);
   }
-  .timebar-expended {
+  .timebar {
     height: 100%;
-    width: 12px;
     background-color: #34324F;
   }
-  .timebar-expended.disabled {
-    -webkit-box-shadow: inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
-    -moz-box-shadow:    inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
-    box-shadow:         inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
+  .timebar.disabled, .timebar.disabled #barOne, .timebar.disabled #barTwo,
+  .timebar.disabled #barThree {
+    -webkit-box-shadow: inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
+    -moz-box-shadow:    inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
+    box-shadow:         inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
+  }
+  .timebar.disabled .label {
+    display: none;
   }
   #barOne {
-    background: rgba(255, 170, 0, 1);
-  }
-  .colorOne {
-    color: rgba(255, 170, 0, 1);
-  }
-  #barTwo {
     background: #00f196;
   }
-  .colorTwo {
+  .colorOne {
     color: #00f196;
+  }
+  #barTwo {
+    background: #FF5757; /* rgba(255, 170, 0, 1); */
+  }
+  .colorTwo {
+    color: #FF5757;
   }
   #barThree {
     background: #3a74a8;
@@ -76,7 +85,7 @@
     color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
     margin-left: -150px;
-    top: 30%;
+    top: 35%;
   }
   .bars .label .values {
     margin-top: 6px;
@@ -84,28 +93,20 @@
 
 </style>
   <div id="container">
-      <div class="menuTab-container">
-        <div class="placeholder-menu icons">
-
+      <div class="timebar disabled">
+        <div id="barOne" class="bars">
+          <span class="label">Decorrido do prazo
+            <div class="values colorOne">
+                60 minutos
+            </div>
+          </span>
         </div>
-        <div class="content">
-
-        </div>
-        <div class="timebar-expended disabled">
-          <div id="barOne" class="bars">
-            <span class="label">Decorrido do prazo
-              <div class="values colorOne">
-                  60 minutos
-              </div>
-            </span>
-          </div>
-          <div id="barTwo" class="bars">
-            <span class="label">Tempo restante
-              <div class="values colorTwo">
-                  40 minutos
-              </div>
-            </span>
-          </div>
+        <div id="barTwo" class="bars">
+          <span class="label">Tempo restante
+            <div class="values colorTwo">
+                40 minutos
+            </div>
+          </span>
         </div>
       </div>
   </div>
@@ -114,6 +115,15 @@
   Polymer({
     is: 'sc-termobar',
     properties: {
+      activate: {
+        type: Boolean,
+        value: false,
+        observer: 'activateChanged'
+      },
+      _myToggleClassValue: {
+        type: Boolean,
+        value: true
+      }
     },
     ready: function() {
       var barOne = this.$.barOne;
@@ -121,6 +131,20 @@
 
       barOne.style.height = "60%";
       barTwo.style.height = "40%";
+
+    },
+    _myToggleClass: function() {
+      var node = this.querySelector('.timebar');
+      if (this._myToggleClassValue) {
+        this._myToggleClassValue = false;
+        this.toggleClass('disabled', false, node)
+      } else {
+        this._myToggleClassValue = true;
+        this.toggleClass('disabled', true, node)
+      }
+    },
+    activateChanged: function() {
+        this._myToggleClass();
     }
   });
 </script>
