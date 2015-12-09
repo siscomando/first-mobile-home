@@ -1,0 +1,127 @@
+
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<!-- app -->
+
+<dom-module id="sc-termobar">
+<template>
+<style>
+  :host {
+    display: block;
+    box-sizing: border-box;
+    color: rgba(0,0,0,.75);
+    font-family: Roboto;
+    font-weight: 300;
+    height: 100%;
+    width: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #13283b;
+  }
+  #container {
+    height: 100%;
+    width: 100%;
+    /* overflow: scroll; */
+    position: absolute;
+  }
+  .menuTab-container {
+    height: 100%;
+    width: 100%;
+    @apply(--layout-horizontal);
+  }
+  .placeholder-menu {
+    width: 100px;
+    background: #1e3345;
+  }
+  .content {
+    width: auto;
+    @apply(--layout-flex);
+  }
+  .timebar-expended {
+    height: 100%;
+    width: 12px;
+    background-color: #34324F;
+  }
+  .timebar-expended.disabled {
+    -webkit-box-shadow: inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
+    -moz-box-shadow:    inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
+    box-shadow:         inset 7px 1px 5px 0px rgba(50, 50, 50, 0.5);
+  }
+  #barOne {
+    background: rgba(255, 170, 0, 1);
+  }
+  .colorOne {
+    color: rgba(255, 170, 0, 1);
+  }
+  #barTwo {
+    background: #00f196;
+  }
+  .colorTwo {
+    color: #00f196;
+  }
+  #barThree {
+    background: #3a74a8;
+  }
+  .colorThree {
+    color: #3a74a8;
+  }
+  .bars {
+    height: 100%;
+    position: relative;
+  }
+  .bars .label {
+    position: absolute;
+    display: block;
+    float: left;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    margin-left: -150px;
+    top: 30%;
+  }
+  .bars .label .values {
+    margin-top: 6px;
+  }
+
+</style>
+  <div id="container">
+      <div class="menuTab-container">
+        <div class="placeholder-menu icons">
+
+        </div>
+        <div class="content">
+
+        </div>
+        <div class="timebar-expended disabled">
+          <div id="barOne" class="bars">
+            <span class="label">Decorrido do prazo
+              <div class="values colorOne">
+                  60 minutos
+              </div>
+            </span>
+          </div>
+          <div id="barTwo" class="bars">
+            <span class="label">Tempo restante
+              <div class="values colorTwo">
+                  40 minutos
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+</template>
+<script>
+  Polymer({
+    is: 'sc-termobar',
+    properties: {
+    },
+    ready: function() {
+      var barOne = this.$.barOne;
+      var barTwo = this.$.barTwo;
+
+      barOne.style.height = "60%";
+      barTwo.style.height = "40%";
+    }
+  });
+</script>
+</dom-module>
