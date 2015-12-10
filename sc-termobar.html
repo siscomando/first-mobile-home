@@ -1,6 +1,7 @@
 
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="bower_components/iron-list/iron-list.html">
 
 <!-- app -->
 
@@ -16,6 +17,19 @@
     float: right;
     z-index: 999; /* optional turn on top */
   }
+
+  Declaring:
+  values is array with objects:
+    [
+      {
+        label: 'The label/legend',
+        value: 10
+      },
+      {
+        label: 'The label/legend',
+        value: 110
+      }
+    ]
 -->
 
 <dom-module id="sc-termobar">
@@ -47,8 +61,7 @@
     height: 100%;
     background-color: #34324F;
   }
-  .timebar.disabled, .timebar.disabled #barOne, .timebar.disabled #barTwo,
-  .timebar.disabled #barThree {
+  .timebar.disabled, .timebar.disabled .bars {
     -webkit-box-shadow: inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
     -moz-box-shadow:    inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
     box-shadow:         inset 5px 0px 5px 0px rgba(50, 50, 50, 0.4);
@@ -56,20 +69,11 @@
   .timebar.disabled .label {
     display: none;
   }
-  #barOne {
-    background: #00f196;
-  }
   .colorOne {
     color: #00f196;
   }
-  #barTwo {
-    background: #FF5757; /* rgba(255, 170, 0, 1); */
-  }
   .colorTwo {
     color: #FF5757;
-  }
-  #barThree {
-    background: #3a74a8;
   }
   .colorThree {
     color: #3a74a8;
@@ -90,24 +94,24 @@
   .bars .label .values {
     margin-top: 6px;
   }
+  .bgcolor0, .bg-success {background: #2ecc71;}
+  .bgcolor1, .bg-info {background: #3498db; /* rgba(255, 170, 0, 1); */}
+  .bgcolor2, .bg-purple {background: #9b59b6;}
+  .bgcolor3, .bg-warning {background: #f1c40f;}
+  .bgcolor4, .bg-alert, .bg-error {background: #e74c3c;}
 
 </style>
   <div id="container">
       <div class="timebar disabled">
-        <div id="barOne" class="bars">
-          <span class="label">Decorrido do prazo
-            <div class="values colorOne">
-                60 minutos
+          <template is="dom-repeat" items="{{_data}}">
+            <div class$="[[_computedClass(item.color)]]" style$="[[_computedHeight(item.percent)]]">
+              <span class="label">{{item.label}}
+                <div class="values colorOne">
+                    {{item.value}} {{item.unit}}
+                </div>
+              </span>
             </div>
-          </span>
-        </div>
-        <div id="barTwo" class="bars">
-          <span class="label">Tempo restante
-            <div class="values colorTwo">
-                40 minutos
-            </div>
-          </span>
-        </div>
+          </template>
       </div>
   </div>
 </template>
@@ -123,16 +127,26 @@
       _myToggleClassValue: {
         type: Boolean,
         value: true
+      },
+      /* The backend end could to send the TOP5 class from workflow */
+      data: {
+        type: Array,
+        value: [],
+        observer: "_computeData"
+      },
+      limit: {
+        type: Number,
+        value: 5 /* remember that the array index begin in the 0 */
+      },
+      _data : {
+        type: Array,
+        value: []
       }
     },
     ready: function() {
-      var barOne = this.$.barOne;
-      var barTwo = this.$.barTwo;
-
-      barOne.style.height = "60%";
-      barTwo.style.height = "40%";
 
     },
+    /* internal use */
     _myToggleClass: function() {
       var node = this.querySelector('.timebar');
       if (this._myToggleClassValue) {
@@ -143,6 +157,52 @@
         this.toggleClass('disabled', true, node)
       }
     },
+    /* `_computeData` calculate the sum.
+    */
+    _computeData: function() {
+      var total = 0; /* this is 100% */
+      var data = this.data;
+      for ( var i = 0, _len = data.length; i < _len; i++ ) {
+        total += parseFloat(data[i].value);
+      }
+      for ( var i = 0, _len = data.length; i < _len; i++ ) {
+        data[i]['percent'] =  ((data[i].value / total) * 100) + '%';
+        data[i]['color'] = "bgcolor" + i;
+      }
+      // TODO: capturar os maiores da lista. Porem o backend poderia nos fornecer
+      // somente os 5.
+
+      this._data = data;
+    },
+    /* `_compare` used to sort data array
+    */
+    _compare: function(a, b) {
+      if (b.value < a.value)
+        return -1;
+      if (b.value > a.value)
+        return 1;
+      return 0;
+    },
+    _orderData: function() {
+      var data = this.data;
+      var ordered = null;
+      data.sort(this._compare);
+      ordered = data.slice(0, this.limit) /* top five */;
+      return ordered;
+    },
+    /* `_theTops` are limited by this.limit */
+    _theTops: function() {
+      var originalArray = this.data;
+      var topLimited = this._orderData();
+    },
+    _computedClass: function(color) {
+      return "bars " + color;
+    },
+    _computedHeight: function(percent) {
+      console.log(percent);
+      return "height: " + percent;
+    },
+    /* user web component interface */
     activateChanged: function() {
         this._myToggleClass();
     }
