@@ -69,15 +69,6 @@
   .timebar.disabled .label {
     display: none;
   }
-  .colorOne {
-    color: #00f196;
-  }
-  .colorTwo {
-    color: #FF5757;
-  }
-  .colorThree {
-    color: #3a74a8;
-  }
   .bars {
     height: 100%;
     position: relative;
@@ -89,7 +80,7 @@
     color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
     margin-left: -150px;
-    top: 35%;
+    top: 21%;
   }
   .bars .label .values {
     margin-top: 6px;
@@ -99,14 +90,18 @@
   .bgcolor2, .bg-purple {background: #9b59b6;}
   .bgcolor3, .bg-warning {background: #f1c40f;}
   .bgcolor4, .bg-alert, .bg-error {background: #e74c3c;}
-
+  .color-success {color: #2ecc71;}
+  .color-info {color: #3498db;}
+  .color-purple {color: #9b59b6;}
+  .color-warning {color: #f1c40f;}
+  .color-error {color: #e74c3c;}
 </style>
   <div id="container">
       <div class="timebar disabled">
           <template is="dom-repeat" items="{{_data}}">
             <div class$="[[_computedClass(item.color)]]" style$="[[_computedHeight(item.percent)]]">
               <span class="label">{{item.label}}
-                <div class="values colorOne">
+                <div class$="[[_computedClassValues(item.color)]]">
                     {{item.value}} {{item.unit}}
                 </div>
               </span>
@@ -163,10 +158,10 @@
       var total = 0; /* this is 100% */
       var data = this.data;
       for ( var i = 0, _len = data.length; i < _len; i++ ) {
-        total += parseFloat(data[i].value);
+        total += parseInt(data[i].value);
       }
       for ( var i = 0, _len = data.length; i < _len; i++ ) {
-        data[i]['percent'] =  ((data[i].value / total) * 100) + '%';
+        data[i]['percent'] = ((data[i].value / total) * 100) + '%';
         data[i]['color'] = "bgcolor" + i;
       }
       // TODO: capturar os maiores da lista. Porem o backend poderia nos fornecer
@@ -199,8 +194,18 @@
       return "bars " + color;
     },
     _computedHeight: function(percent) {
-      console.log(percent);
       return "height: " + percent;
+    },
+    _computedClassValues: function(color) {
+      var mappedColor = {
+        'bgcolor0': 'color-success',
+        'bgcolor1': 'color-info',
+        'bgcolor2': 'color-purple',
+        'bgcolor3': 'color-warning',
+        'bgcolor4': 'color-error',
+      }
+      console.log(mappedColor[color]);
+      return "values " + mappedColor[color];
     },
     /* user web component interface */
     activateChanged: function() {
