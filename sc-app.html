@@ -1,19 +1,23 @@
+<!-- polymer imports -->
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="bower_components/paper-input/paper-input.html">
-<link rel="import" href="bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<!-- third imports -->
+
+<!-- app imports -->
 <link rel="import" href="sc-home.html">
-<link rel="import" href="sc-feeds.html">
 <link rel="import" href="sc-dialog-post.html">
 <link rel="import" href="sc-profile.html">
+<link rel="import" href="sc-main-page.html">
 
 <dom-module id="sc-app">
+<template>
     <style>
     :host {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -24,52 +28,9 @@
         border-left: 1px solid rgba(0,0,0, 0.12);
       };
     }
-    #mainContent { /* the default is mobile */
-      @apply(--layout-vertical);
-      width: 100%;
-      height: 100%;
-    }
-    #mainContent .rowOne {
-      @apply(--layout-flex);
-      overflow-y: scroll;
-      padding-left: 5px;
-      padding-right: 8px;
-      padding-top: 10px;
-      padding-bottom: 133px;
-    }
-    #mainContent .rowTwo {
-
-    }
-    iron-pages div.homeList {
-      width: 100%;
-      height: 100%;
-      overflow-y: scroll;
-      padding-bottom: 65px;
-    }
-    iron-pages {
-      overflow-y: scroll;
-      height: 100%;
-    }
     neon-animated-pages {
       @apply(--layout-flex);
       height: 100%;
-    }
-
-    paper-fab {
-      display: block;
-      margin-bottom:24px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    paper-fab.green {
-      --paper-fab-background: #7ED321;
-      --paper-fab-keyboard-focus-background: var(--paper-green-900);
-    }
-    paper-fab.mainAction {
-      position: fixed;
-      float: right;
-      bottom: 0px;
-      right: 17px;
     }
     paper-toolbar {
       --paper-toolbar-background: #135FB8;
@@ -83,62 +44,20 @@
     paper-toolbar span.title {
       @apply(--layout-flex)
     }
-    paper-input.short {
-      width: 100%;
-    }
-    #inputWithButton {
-      display: none;
-    }
-    paper-input#inputWithButton {
-      --paper-input-container-color: rgba(255,255,255,0.54);
-      --paper-input-container-focus-color: rgba(255,255,255,0.54);
-      --paper-input-container-input-color: rgba(255,255,255,0.86);
-      margin-bottom: 30px;
-    }
-    paper-textarea#inputLikeZap {
-        --paper-input-container: {
-          background-color: rgba(255,255,255,0.8);
-          padding-left: 10px;
-          padding-right: 6px;
-          border-top: 1px solid rgba(0,0,0,.10);
-        }
-    }
-    .bottomInput {
-      position: absolute;
-      float: left;
-      background: #F5F8F8;
-      width: 100%;
-      bottom: 0;
-    }
-    paper-icon-button.clearWhite {
-      color: #CCC;
-      --paper-icon-button-ink-color:#CCC;
-    }
     paper-icon-button.clearBtn {
       position: absolute;
       float: right;
       right: 0;
     }
-    #menuBack, #backAllMessagesBtn {
+    #menuBack {
       display: none;
     }
-    @media (min-width: 768px) and (orientation: landscape) {
-      #mainContent {
-          @apply(--layout-vertical);
-          width: 100%;
-          height: 100%;
-          overflow-y: scroll;
-      }
-      #mainContent .rowOne {
-        padding-left: 5px;
-        padding-right: 40px;
-        padding-bottom: 120px;
-      }
+    #mainSCPages {
+      height: 100%;
     }
 
     </style>
 
-    <template>
       <paper-drawer-panel id="panel">
           <paper-header-panel drawer>
             <paper-toolbar class="drawerToolbar">
@@ -159,68 +78,39 @@
 
           </paper-header-panel>
           <paper-header-panel main>
-            <paper-toolbar>
-              <!-- backHome eh paliativo, o ideal eh colocar quando fechar o drawer sempre voltar para home. -->
-              <paper-icon-button id="inboxBtn" icon="inbox" on-tap="backHome" paper-drawer-toggle></paper-icon-button>
-              <paper-icon-button id="backAllMessagesBtn" on-tap="backAllMessages" icon="chevron-left"></paper-icon-button>
-              <span id="mainTitle" class="title">{{titleSection}}</span>
-              <!-- hide/show -->
-              <paper-icon-button id="btnSearch" on-tap="toggleClick" icon="search"></paper-icon-button>
-              <!-- hide/show -->
-              <paper-input flex class="short" label="pesquise qualquer coisa..." id="inputWithButton">
-                <paper-icon-button suffix on-tap="clearInput"
-                    icon="clear" alt="clear" title="clear" tabindex="0">
-                </paper-icon-button>
-              </paper-input>
-
-              <!-- <paper-icon-button icon="add">+</paper-icon-button>-->
-            </paper-toolbar>
-              <div id="mainContent">
-                <div class="rowOne">
-                    <neon-animated-pages id="pagesMain" selected="[[selectedPageFromMain]]">
-                        <sc-feeds id="mainFeeds"></sc-feeds>
-                        <!-- <sc-feeds id="feedsTicket" firedName="feedsTicket"></sc-feeds>-->
-                    </neon-animated-pages>
-                </div>
-                <div class="rowTwo">
-                  <div class="bottomInput">
-                    <!-- <paper-icon-button class="clearWhite clearBtn" suffix on-tap="clearInputLikeZap"
-                        icon="clear" alt="clear" title="clear" tabindex="0">
-                    </paper-icon-button>
-                      -->
-                    <paper-textarea flex class="short" label="O que você pode resolver..." id="inputLikeZap">
-                    </paper-textarea>
-                  </div>
-                </div>
-
-                <!--
-                <paper-fab on-click="handleClick" noink icon="create" title="create" class="green mainAction"></paper-fab>
-                <sc-dialog-post id="dialogPost"></sc-dialog-post>
-                -->
-              </div>
+            <div id="mainSCPages">
+                <neon-animated-pages selected="0">
+                    <sc-main-page id="mainPage"></sc-main-page>
+                    <div>
+                     <p>Menu de fundo </p>
+                    </div>
+                </neon-animated-pages>
+            </div>
           </paper-header-panel>
+
       </paper-drawer-panel>
     </template>
     <script>
       Polymer({
         is: "sc-app",
+        behavior: [
+          Polymer.NeonAnimationRunnerBehavior,
+        ],
         properties: {
-          titleSection: {
-            type: String,
-            value: 'All messages'
+          animationConfig: {
+            name: 'slide-right-animation',
+            node: 'resumePage',
+            timing: 700
           },
           selectedPage: {
             type: Number,
             value: 0
-          },
-          selectedPageFromMain: {
-              type: Number,
-              value: 0
           }
         },
         ready: function() {
           var self = this;
-          var feeds = this.$.mainFeeds;
+          var mainPage = this.$.mainPage;
+          var feeds = this.$.mainPage.$.mainFeeds;
           var home = this.$.home;
           // var feedsTicket = this.$.feedsTicket;
 
@@ -230,128 +120,44 @@
             self.$.menuMenu.style.display = 'none';
             self.$.menuBack.style.display = 'block';
           });
+          // back home
+          feeds.addEventListener('back-home', function() {
+            self.selectedPage = 0;
+            self.$.menuMenu.style.display = 'block';
+            self.$.menuBack.style.display = 'none';
+          });
+          // back home list of issues from sc-home
           this.addEventListener('back-home', function() {
             self.selectedPage = 0;
             self.$.menuMenu.style.display = 'block';
             self.$.menuBack.style.display = 'none';
           });
-          // listen if feeds was updated.
-          feeds.addEventListener('feeds-updated', function(){
-            self.updateScroll();
-          });
-          // listen if feeds item was selected
-          feeds.addEventListener('feed-selected', function(){
-            var item = this.$.itemsList.selectedItem;
-            if ('target_hashtag' in item) {
-              self.previousSelectedItem = feeds.hashtag;
-              feeds.hashtag = item.target_hashtag;
-              self.titleSection = feeds.hashtag
-              self.toggleMainBtn(true); // changes btn inbox to back (chevron)
-              // optional
-              self.$.panel.closeDrawer();
-            }
-          });
           // listen home item was selected
           home.addEventListener('home-selected', function(){
             feeds.hashtag = home.$.itemsList.selectedItem.hashtag;
-            self.titleSection = feeds.hashtag;
-            self.toggleMainBtn(true); // changes btn inbox to back (chevron)
+            mainPage.titleSection = feeds.hashtag;
+            mainPage.toggleMainBtn(true); // changes btn inbox to back (chevron)
             // optional
             self.$.panel.closeDrawer();
           });
+
+          mainPage.addEventListener('home-unselect', function(){
+              home.unselect();
+          });
+
         },
         attached: function() {
           /* styling anything */
           var paperDrawerPanel = this.querySelector('paper-drawer-panel');
           paperDrawerPanel.drawerWidth = "350px";
-          this.updateScroll();
-        },
-        handleClick: function() {
-          var dialogPost = this.$.dialogPost;
-          dialogPost.open();
-        },
-        toggleClick: function() {
-          // show or hide input and show or hide icon
-          var btnSearch = this.$.btnSearch;
-          var inputWithButton = this.$.inputWithButton;
-          var mainTitle = this.$.mainTitle;
-
-          if (btnSearch.style.display == 'none') {
-            btnSearch.style.display = 'block';
-            inputWithButton.style.display = 'none';
-            mainTitle.style.display = 'block';
-          } else {
-            btnSearch.style.display = 'none';
-            inputWithButton.style.display = 'block';
-            mainTitle.style.display = 'none';
-          }
-        },
-        /** `toggleMainBtn` toggle inboxBtn or backAllMessagesBtn
-        * @param `forward`: if `true` toggle disabled and only back
-        * btn is showed.
-        */
-        toggleMainBtn: function (forward) {
-          var inboxBtn = this.$.inboxBtn;
-          var backAllMessagesBtn = this.$.backAllMessagesBtn;
-
-          if (forward === true) {
-              inboxBtn.style.display = 'none';
-              backAllMessagesBtn.style.display = 'block';
-          } else {
-              if (inboxBtn.style.display == 'none') {
-                inboxBtn.style.display = 'block';
-                backAllMessagesBtn.style.display = 'none';
-              } else {
-                inboxBtn.style.display = 'none';
-                backAllMessagesBtn.style.display = 'block';
-              }
-          }
-        },
-        clearInput: function() {
-          this.$.inputWithButton.value = '';
-          this.toggleClick();
-        },
-        clearInputLikeZap: function () {
-          this.$.inputLikeZap.value = '';
-        },
-        /**
-        * `updateScroll` move scroll from bottom to up (inverse behavior)
-        */
-        updateScroll: function () {
-          var mainContent = this.$.mainContent;
-          var rowOne = mainContent.querySelector('.rowOne');
-          rowOne.scrollTop = rowOne.scrollHeight;
-        },
-        afterAddedContent: function() {
-          // actions after updates "on the fly"
+          this.$.mainPage.updateScroll();
         },
         showProfile: function() {
           this.fire('show-profile');
         },
         backHome: function() {
-          this.fire('back-home');
-        },
-        /** `backAllMessages` go back to hashtag `all`. So backs
-        * unselect if selected item in the sc-home and make query
-        * to backend for all messages (last messages, for example).
-        **/
-        backAllMessages: function() {
-         // We basically to change hashtag from sc-feeds
-         var feeds = this.$.mainFeeds;
-         var home = this.$.home;
-         feeds.hashtag = this.previousSelectedItem;
-         if (this.previousSelectedItem) {
-            this.titleSection = this.previousSelectedItem;
-            this.previousSelectedItem = null;
-         } else {
-            this.titleSection = 'All';
-            feeds.hashtag = 'all';
-            this.toggleMainBtn();
-            home.unselect();
-        }
-
-        // #main.paper-drawer-panel [paper-drawer-toggle]
-        }
+         this.fire('back-home');
+       }
       });
     </script>
 </dom-module>

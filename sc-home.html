@@ -10,8 +10,7 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
-
-
+<link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -141,6 +140,7 @@ Example:
         opacity: 0.8;
        }
     </style>
+
     <iron-ajax
       url="/demo/data_home.json"
       on-response="ajaxResponse"
@@ -150,7 +150,7 @@ Example:
     <div class="list-container">
       <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
         <template>
-            <div tabindex="0" on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
+            <div on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
               <!-- div header -->
               <div class="service-item-headers service-item-header">
                 <div class="flexchild"><h3>[[item.service]]</h3></div>
@@ -160,7 +160,9 @@ Example:
               <div class="service-item-headers service-item-subheader">
                 <span>[[item.hashtag]]</span>
                 <!-- colocar um filter momentjs aqui quando integrado com meteor -->
-                <span>[[item.lastMessage.timestamp]]</span>
+                <span>
+                  <sc-timeago datetime="[[_convertTimestamp(item.lastMessage.timestamp)]]"></sc-timeago>
+                </span>
               </div>
               <!-- div message -->
               <div class="service-item-body">
@@ -175,7 +177,7 @@ Example:
       </iron-list>
     </div>
     <!-- End: html common -->
-  </template>
+</template>
 
   <script>
     Polymer({
@@ -260,8 +262,28 @@ Example:
       },
       _getAriaLabel: function(item, selected) {
         return selected ? 'Deselect ' + item.hashtag : 'Select ' + item.hashtag;
-      }
+      },
+      _convertTimestamp: function(unix_timestamp) {
+        // this code sample was copied from
+        // http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+        //
+        // Create a new JavaScript Date object based on the timestamp
+        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+        var date = new Date(unix_timestamp*1000);
+        var hours = "0" + date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        var seconds = "0" + date.getSeconds();
+        // Full year
+        var year = date.getFullYear();
+        var month = "0" + date.getMonth();
+        var day = "0" + date.getDay();
+        // YYYY-MM-DDT00:00:00
 
+        var formattedTime = year + '-' +  month.substr(-2) + '-' +  day.substr(-2) + 'T' + hours.substr(-2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + '.000Z';
+        return formattedTime;
+      }
     });
   </script>
 </dom-module>
