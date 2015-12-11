@@ -6,6 +6,10 @@
 <!-- app -->
 
 <!--
+
+  TODO: We can create predefined URL as /termo/[:id:] to search data for
+  sc-termobar.
+  
   Usage:
 
   <sc-termobar id="termobar"></sc-termobar>
@@ -96,7 +100,7 @@
   .color-warning {color: #f1c40f;}
   .color-error {color: #e74c3c;}
 </style>
-  <div id="container">
+  <div id="container" class="">
       <div class="timebar disabled">
           <template is="dom-repeat" items="{{_data}}">
             <div class$="[[_computedClass(item.color)]]" style$="[[_computedHeight(item.percent)]]">
@@ -119,6 +123,11 @@
         value: false,
         observer: 'activateChanged'
       },
+      enabled: {
+        type: Boolean,
+        value: true,
+        observer: 'enabledChanged'
+      },
       _myToggleClassValue: {
         type: Boolean,
         value: true
@@ -139,7 +148,10 @@
       }
     },
     ready: function() {
-
+       // if data is empty hidden this
+       if (this.data.length === 0) {
+         this.enabled = false;
+       }
     },
     /* internal use */
     _myToggleClass: function() {
@@ -168,6 +180,7 @@
       // somente os 5.
 
       this._data = data;
+      this.enabled = true;
     },
     /* `_compare` used to sort data array
     */
@@ -204,12 +217,20 @@
         'bgcolor3': 'color-warning',
         'bgcolor4': 'color-error',
       }
-      console.log(mappedColor[color]);
       return "values " + mappedColor[color];
     },
     /* user web component interface */
     activateChanged: function() {
         this._myToggleClass();
+    },
+    enabledChanged: function() {
+      var node = this.$.container;
+
+      if (this.enabled) {
+        this.style.display = "block";
+      } else {
+        this.style.display = "none";
+      }
     }
   });
 </script>
