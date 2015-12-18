@@ -308,7 +308,6 @@ Example:
       },
 
       // Element Lifecycle
-
       ready: function() {
           // this._setUrl('all');
           this.addEventListener('feeds-updated', function(){
@@ -318,7 +317,7 @@ Example:
       // Ajax response
       ajaxResponse: function(event) {
           this.documents = event.detail.response;
-          this.fire('feeds-updated');
+          this.fire('feeds-updated', {type: this.documents.type});
       },
       /** mock function for development
       */
@@ -383,7 +382,7 @@ Example:
        */
       _selectItem: function(e){
           this.$.itemsList.selectItem(e.model.message);
-          this.fire('feed-selected');
+          this.fire('feed-selected', {message: e.model.message});
       }
     });
   </script>

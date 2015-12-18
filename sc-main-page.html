@@ -154,8 +154,8 @@
         self.updateScroll();
       });
       // listen if feeds item was selected ...
-      feeds.addEventListener('feed-selected', function(){
-        var item = feeds.$.itemsList.selectedItem;
+      feeds.addEventListener('feed-selected', function(e){
+        var item = e.detail.message;
 
         if ('target_hashtag' in item) {
           self.titleSection = item.target;
@@ -223,8 +223,8 @@
     clearInputLikeZap: function () {
       this.$.inputLikeZap.value = '';
     },
-    /** `backAllMessages` go back to hashtag `all`. So backs
-    * unselect if selected item in the sc-home and make query
+    /** `backAllMessages` go back to hashtag `all`. Make unselect if item already
+    * selected (in sc-home) and make query
     * to backend for all messages (last messages, for example).
     **/
     backAllMessages: function() {

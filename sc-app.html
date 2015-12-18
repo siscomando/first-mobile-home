@@ -21,6 +21,14 @@
 <link rel="import" href="sc-page-termobar.html">
 <link rel="import" href="sc-termobar.html">
 
+<!-- ** Poderiamos seguir regras para crair url como:
+     *  /user/meetings/ - Returns all meetings create or follows by user/
+     *  /messages/ - Returns all messages from all meetings/
+     *  /messages?system=expresso&issue=2015RI0001010 - Returns messages by system or issue/
+     *  /statistics/ - Returns statistics from all follows system/
+     *  /statistics?system=expresso&issue=2015RI0001010 - Returns statistics by system or issue/
+-->
+
 <dom-module id="sc-app">
 <template>
     <style>
@@ -83,7 +91,6 @@
       top: 0;
       left: 0;
       height: 100%;
-      background-color: white;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       @apply(--paper-drawer-panel-drawer-container);
@@ -270,7 +277,18 @@
                   value: function() {
                     return 'willChange' in this.style;
                   }
-                }
+                },
+                /**
+                 * Indicates if the user's navigation is "by system"
+                 * or "by issues" or "all" or "meeting", etc. It'll used
+                 * to build querystring of the url to get statiscts data.
+                 * /statiscts?system=XYZ  or;
+                 * /statiscts?issue=ABC
+                 */
+                whereis: {
+                  type: Boolean,
+                  value: 'all' // system, issue, meeting, all
+                },
             },
             listeners: {
                 track: '_onTrack',
@@ -310,11 +328,12 @@
                     // optional
                     self.$.panel.closeDrawer();
                 });
-
+                feeds.addEventListener('feeds-updated', function(e){
+                  self.whereis = e.detail.type;
+                });
                 mainPage.addEventListener('home-unselect', function() {
                     home.unselect();
                 });
-
             },
             attached: function() {
                 /* styling anything */
