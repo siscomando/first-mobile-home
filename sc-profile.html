@@ -105,9 +105,10 @@ Example:
               <paper-item>
                 <iron-icon icon="add" item-icon></iron-icon>
                 Criar Canal </paper-item>
-              <paper-item>
+              <!-- <paper-item on-tap="openPage">
                 <iron-icon icon="question-answer" item-icon></iron-icon>
                 Conversas </paper-item>
+              -->
               <paper-item>
                 <iron-icon icon="dashboard" item-icon></iron-icon>
                 Dashboard </paper-item>
@@ -170,32 +171,13 @@ Example:
       // Element Lifecycle
 
       ready: function() {
-        // `ready` is called after all elements have been configured, but
-        // propagates bottom-up. This element's children are ready, but parents
-        // are not.
-        //
-        // This is the point where you should make modifications to the DOM (when
-        // necessary), or kick off any processes the element wants to perform.
       },
 
       attached: function() {
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
         var avatarPlace = this.querySelector('.avatar');
         avatarPlace.style.background = 'url(' + this.user.avatar + ')';
         avatarPlace.style.backgroundSize = '100%';
         avatarPlace.style.backgroundSize = 'cover';
-      },
-
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
       }
     });
   </script>
