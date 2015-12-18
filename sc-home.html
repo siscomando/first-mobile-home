@@ -251,7 +251,8 @@ Example:
             var item = this.$.itemsList.selectedItem;
             this.$.itemsList.deselectItem(item);
         }
-
+        // warning
+        this.fire('home-unselected');
        },
       _computedClass: function(isSelected) {
         var classes = 'service-item';
