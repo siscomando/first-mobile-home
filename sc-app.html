@@ -328,11 +328,14 @@
                     // optional
                     self.$.panel.closeDrawer();
                 });
+                // to "request" or re-render for all messages
+                home.addEventListener('home-unselected', function() {
+                    feeds.hashtag = null;
+                    mainPage.titleSection = "All"; // TODO: Seria melhor pegar do proprio feeds.
+                    mainPage.toggleMainBtn(); // changes btn inbox to back (chevron)
+                });
                 feeds.addEventListener('feeds-updated', function(e){
                   self.whereis = e.detail.type;
-                });
-                mainPage.addEventListener('home-unselect', function() {
-                    home.unselect();
                 });
             },
             attached: function() {
