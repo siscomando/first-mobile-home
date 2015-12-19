@@ -10,6 +10,7 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
 
 <!--
@@ -62,6 +63,9 @@ Example:
       .service-item.selected {
         background-color: rgba(19,95,184,.75);
         color: white !important;
+      }
+      .service-item:hover:not(.selected) {
+        background-color: rgba(0,0,0,.012);
       }
       .service-item.selected .service-item-subheader span {
         color: white;
@@ -139,6 +143,27 @@ Example:
         border-radius: 6px;
         opacity: 0.8;
        }
+       /* Actions */
+      .service-item-actions {
+        position: absolute;
+        display: block;
+        float: right;
+        bottom:0;
+        right:0;
+      }
+      .service-item > .service-item-actions {
+        visibility: hidden;
+      }
+      .service-item:hover > .service-item-actions {
+        visibility: visible;
+      }
+      .service-item-actions paper-icon-button {
+        opacity: 0.6;
+      }
+      .service-item-actions paper-icon-button:hover {
+        opacity: 1;
+      }
+
     </style>
 
     <iron-ajax
@@ -172,6 +197,9 @@ Example:
                   </div>
                 </template>
                 [[item.lastMessage.body]]</div>
+              <div class="service-item-actions">
+                <paper-icon-button noink icon="delete" title="delete" on-tap="unfollow"></paper-icon-button>
+              </div>
             </div>
         </template>
       </iron-list>
@@ -284,6 +312,10 @@ Example:
 
         var formattedTime = year + '-' +  month.substr(-2) + '-' +  day.substr(-2) + 'T' + hours.substr(-2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + '.000Z';
         return formattedTime;
+      },
+      unfollow: function(e) {
+        e.preventDefault();
+        console.log("unfollowing");
       }
     });
   </script>
