@@ -3,15 +3,17 @@
 Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 -->
 
-<link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/iron-list/iron-list.html">
-<link rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="/bower_components/neon-animation/animations/slide-from-left-animation.html">
-<link rel="import" href="/bower_components/neon-animation/animations/slide-left-animation.html">
-<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/bower_components/sc-timeago/sc-timeago.html">
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-list/iron-list.html">
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
+<link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -58,6 +60,10 @@ Example:
         cursor: pointer;
         height: 90px;
         text-overflow:ellipsis;
+      }
+      .front-box {
+        word-wrap: break-word;
+        overflow: hidden;
       }
       /* hover for desktop */
       .service-item.selected {
@@ -146,15 +152,17 @@ Example:
        /* Actions */
       .service-item-actions {
         position: absolute;
-        display: block;
+        visibility: hidden;
         float: right;
         bottom:0;
         right:0;
       }
-      .service-item > .service-item-actions {
+      .service-item > .service-item-actions,
+      .front-box > .service-item-actions  {
         visibility: hidden;
       }
-      .service-item:hover > .service-item-actions {
+      .service-item:hover > .service-item-actions,
+      .front-box:hover > .service-item-actions{
         visibility: visible;
       }
       .service-item-actions paper-icon-button {
@@ -162,6 +170,36 @@ Example:
       }
       .service-item-actions paper-icon-button:hover {
         opacity: 1;
+      }
+      .toDelete .pos-menu {
+        display: block;
+      }
+      .pos-menu {
+        position: absolute;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.7);
+        height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+      .over-box {
+        @apply(--layout-horizontal);
+        height: 100%;
+        width: 100%;
+      }
+      .over-box paper-button {
+        position: relative;
+        display: block;
+        @apply(--layout-flex);
+        height: 100%;
+        padding-top: 34px;
+      }
+      .over-box paper-button.icon-check {
+        color: #00E676;
+      }
+      .over-box paper-button.icon-clear {
+        color: #FF0068;
       }
 
     </style>
@@ -175,30 +213,39 @@ Example:
     <div class="list-container">
       <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
         <template>
-            <div on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
-              <!-- div header -->
-              <div class="service-item-headers service-item-header">
-                <div class="flexchild"><h3>[[item.service]]</h3></div>
-                <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
-              </div>
-              <!-- div subheader -->
-              <div class="service-item-headers service-item-subheader">
-                <span>[[item.hashtag]]</span>
-                <!-- colocar um filter momentjs aqui quando integrado com meteor -->
-                <span>
-                  <sc-timeago datetime="[[_convertTimestamp(item.lastMessage.timestamp)]]"></sc-timeago>
-                </span>
-              </div>
-              <!-- div message -->
-              <div class="service-item-body">
-                <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
-                  <div class="avatarBox">
-                    <img src="[[item.lastMessage.user.avatar]]">
+            <div aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
+              <div class="front-box" on-tap="toggleSelectItem">
+                  <!-- div header -->
+                  <div class="service-item-headers service-item-header">
+                    <div class="flexchild"><h3>[[item.service]]</h3></div>
+                    <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
                   </div>
-                </template>
-                [[item.lastMessage.body]]</div>
-              <div class="service-item-actions">
-                <paper-icon-button noink icon="delete" title="delete" on-tap="unfollow"></paper-icon-button>
+                  <!-- div subheader -->
+                  <div class="service-item-headers service-item-subheader">
+                    <span>[[item.hashtag]]</span>
+                    <!-- colocar um filter momentjs aqui quando integrado com meteor -->
+                    <span>
+                      <sc-timeago datetime="[[_convertTimestamp(item.lastMessage.timestamp)]]"></sc-timeago>
+                    </span>
+                  </div>
+                  <!-- div message -->
+                  <div class="service-item-body">
+                    <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
+                      <div class="avatarBox">
+                        <img src="[[item.lastMessage.user.avatar]]">
+                      </div>
+                    </template>
+                    [[item.lastMessage.body]]</div>
+                  <div class="service-item-actions">
+                    <paper-icon-button noink icon="delete" title="delete" on-tap="unfollow"></paper-icon-button>
+                  </div>
+              </div>
+              <!-- pos menu -->
+              <div class="pos-menu">
+                  <div class="over-box over-box-delete">
+                      <paper-button class="icon-clear"><iron-icon icon="clear"></iron-icon></paper-button>
+                      <paper-button class="icon-check"><iron-icon icon="check"></iron-icon></paper-button>
+                  </div>
               </div>
             </div>
         </template>
@@ -242,16 +289,23 @@ Example:
          */
         fancy: Boolean,
       },
-
+      selectable: {
+        type: Boolean,
+        value: true
+      },
       // Element Lifecycle
-      // ...
+      //
+      ready: function() {
+        console.log('ovo');
+        console.log('galinha');
+      },
       // Ajax response
       ajaxResponse: function(event) {
           this.documents = event.detail.response;
       },
       // Selection Behavior
-      selectItem: function(e) {
-         this._selectItem(e);
+      toggleSelectItem: function(e) {
+          this._selectItem(e);
        },
        /* `_selectItem` select or unselect item
        *
@@ -260,14 +314,21 @@ Example:
         // if new selected item was already prevously selected
         // we must unselect it. ELSE ..
         // to select new item and fire 'home-selected' event.
-        if (this.$.itemsList.selectedItem == e.model.item) {
-            // unselect
-            this._unselect(e);
-            this._computedClass(false);
+
+        console.log(this.selectable);
+        if (this.selectable.value === true || this.selectable === true) {
+          if (this.$.itemsList.selectedItem == e.model.item) {
+              // unselect
+              this._unselect(e);
+              //this._computedClass(false);
+          } else {
+              this.$.itemsList.selectItem(e.model.item);
+              this.fire('home-selected');
+          }
         } else {
-            this.$.itemsList.selectItem(e.model.item);
-            this.fire('home-selected');
+          this.selectable = true;
         }
+
       },
       unselect: function() {
         this._unselect();
@@ -282,10 +343,16 @@ Example:
         // warning
         this.fire('home-unselected');
        },
+       _removeToDelete: function() {
+         removeAll = this.querySelectorAll('.toDelete');
+         for (var i = 0; i < removeAll.length; i++) {
+           this.toggleClass('toDelete', false, removeAll[i]);
+         }
+       },
       _computedClass: function(isSelected) {
         var classes = 'service-item';
         if (isSelected) {
-          classes += ' selected';
+              classes += ' selected ';
         }
         return classes;
       },
@@ -314,8 +381,21 @@ Example:
         return formattedTime;
       },
       unfollow: function(e) {
-        e.preventDefault();
-        console.log("unfollowing");
+        this.selectable = false;
+        this._removeToDelete();
+        var parent = this.getParent(e.target, "service-item");
+        this.toggleClass('toDelete', true, parent);
+      },
+      getParent: function(el, byClass) {
+        var p = el.parentNode;
+        while (p !== null) {
+            var o = p;
+            if (o.classList.contains(byClass)) {
+              return o
+            }
+            p = o.parentNode;
+        }
+        return undefined; // returns an Array []
       }
     });
   </script>
