@@ -10,6 +10,11 @@ Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 <link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
 <link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
+
+<link rel="import" href="bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="bower_components/iron-icons/social-icons.html">
+<!-- app -->
 <link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
 
 <!--
@@ -48,7 +53,7 @@ Example:
         overflow-y: scroll;
       }
       .service-item {
-        @apply(--layout-vertical);
+        @apply(--layout-horizontal);
         border-bottom: 1px solid rgba(0, 0, 0, 0.09);
         padding-bottom: 5px;
         padding-top: 5px;
@@ -56,7 +61,21 @@ Example:
         padding-right: 6px;
         cursor: pointer;
         height: 90px;
-        text-overflow:ellipsis;
+        text-overflow: ellipsis;
+      }
+      .content {
+        @apply(--layout-vertical);
+        @apply(--layout-flex);
+      }
+      .more {
+        width: 56dp;
+        width: 32px;
+        vertical-align: middle;
+        text-align: center;
+      }
+      .more iron-icon {
+        margin-top: 26px;
+        color: rgba(0,0,0, .30);
       }
       /* hover for desktop */
       .service-item.selected {
@@ -97,15 +116,13 @@ Example:
         height: 18px;
         text-align: center;
         margin-top: 1px;
-        margin-bottom: -6px;
-        margin-left: 10px;
-        margin-right: 5px;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
         border-radius: 3px;
         background: #CCC;
         padding-top: 2px;
         color: #FFF;
+        margin-right: 12px;
       }
       .service-counter.new-message{
         background: #4A90E2;
@@ -116,6 +133,7 @@ Example:
         @apply(--layout-flex);
       }
       .service-item-body {
+        @apply(--layout-horizontal);
         overflow: hidden;
         font-size: 14px;
         line-height: 17px;
@@ -123,14 +141,20 @@ Example:
         color: rgba(0,0,0,0.38);
       }
       .avatarBox {
-        float:left;
+        float:right;
         width: 32px;
         height: 32px;
         -webkit-border-radius: 6px; /* Can also be 55px */
         -moz-border-radius: 6px;
         border-radius: 6px;
         margin-right: 6px;
+        @apply(--layout-flex);
+        @apply(--layout-flex-1);
        }
+      .service-item-body-content {
+        @apply(--layout-flex);
+        @apply(--layout-flex-11);
+      }
       .avatarBox img {
         width: 32px;
         height: 32px;
@@ -138,7 +162,28 @@ Example:
         -moz-border-radius: 6px;
         border-radius: 6px;
         opacity: 0.8;
+        float: right;
+        right: 0;
        }
+       #dialog {
+         width: 80%;
+         @apply(--layout-vertical);
+       }
+       #overlay {
+       position: fixed;
+       left: 0;
+       top: 0;
+       background: rgba(0,0,0,0.5);
+       height: 100%;
+       width: 100%;
+       display: none;
+      }
+      #overlay.enabled {
+        display: block;
+      }
+      @media (min-width: 768px) and (orientation: portrait) {
+
+      }
     </style>
 
     <iron-ajax
@@ -150,32 +195,51 @@ Example:
     <div class="list-container">
       <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
         <template>
-            <div on-tap="selectItem" aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
+            <div aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]">
               <!-- div header -->
-              <div class="service-item-headers service-item-header">
-                <div class="flexchild"><h3>[[item.service]]</h3></div>
-                <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
-              </div>
-              <!-- div subheader -->
-              <div class="service-item-headers service-item-subheader">
-                <span>[[item.hashtag]]</span>
-                <!-- colocar um filter momentjs aqui quando integrado com meteor -->
-                <span>
-                  <sc-timeago datetime="[[_convertTimestamp(item.lastMessage.timestamp)]]"></sc-timeago>
-                </span>
-              </div>
-              <!-- div message -->
-              <div class="service-item-body">
-                <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
-                  <div class="avatarBox">
-                    <img src="[[item.lastMessage.user.avatar]]">
+              <div class="content" on-tap="selectItem">
+                  <div class="service-item-headers service-item-header">
+                    <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
+                    <div class="flexchild"><h3>[[item.service]]</h3></div>
                   </div>
-                </template>
-                [[item.lastMessage.body]]</div>
+                  <!-- div subheader -->
+                  <div class="service-item-headers service-item-subheader">
+                    <span>[[item.hashtag]]</span>
+                    <!-- colocar um filter momentjs aqui quando integrado com meteor -->
+                    <span>
+                      <sc-timeago datetime="[[_convertTimestamp(item.lastMessage.timestamp)]]"></sc-timeago>
+                    </span>
+                  </div>
+                  <!-- div message -->
+                  <div class="service-item-body">
+                    <div class="service-item-body-content">
+                      [[item.lastMessage.body]]
+                    </div>
+                    <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
+                      <div class="avatarBox">
+                        <img src="[[item.lastMessage.user.avatar]]">
+                      </div>
+                    </template>
+                  </div>
+              </div>
+              <!-- menu more options -->
+              <div class="more" on-tap="dialogToggle">
+                <iron-icon icon="more-vert"></iron-icon>
+              </div>
             </div>
         </template>
       </iron-list>
     </div>
+    <div id="overlay" class=""></div>
+    <paper-dialog id="dialog" role="listbox" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+      <h2>{{dialogItemSelected.service}}</h2>
+        <paper-icon-item>
+          <iron-icon icon="icons:highlight-off" item-icon></iron-icon> Deixar de receber atualizações
+        </paper-icon-item>
+        <paper-icon-item>
+          <iron-icon icon="social:notifications-off" item-icon></iron-icon> Silenciar notificações
+        </paper-icon-item>
+    </paper-dialog>
     <!-- End: html common -->
 </template>
 
@@ -213,6 +277,12 @@ Example:
          * while checking its pocket watch.
          */
         fancy: Boolean,
+        /** `dialogItemSelected` is a container receives data from item (iron-list)
+        clicked before open dialog that will be change in next action.
+        */
+        dialogItemSelected: {
+          type: Object
+        }
       },
 
       // Element Lifecycle
@@ -284,6 +354,19 @@ Example:
 
         var formattedTime = year + '-' +  month.substr(-2) + '-' +  day.substr(-2) + 'T' + hours.substr(-2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2) + '.000Z';
         return formattedTime;
+      },
+      dialogToggle: function(e) {
+        var self = this;
+        this.dialogItemSelected = e.model.item;
+        // activing ...
+        // change and add class enabled for #
+        this.$.dialog.open();
+        this.toggleClass('enabled', true, this.$.overlay);
+
+        // deactiving ...
+        this.$.dialog.addEventListener('iron-overlay-closed', function(){
+              this.toggleClass('enabled', false, self.$.overlay);
+        });
       }
     });
   </script>
