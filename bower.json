@@ -44,7 +44,9 @@
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#~1.0.2",
     "mark-down": "elliptical-mark-down#~1.0.6",
     "sc-timeago": "*",
-    "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.4"
+    "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.4",
+    "app-router": "~2.6.1",
+    "pushstate-anchor": "~0.3.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

@@ -3,20 +3,6 @@
 Copyright (c) 2015 Horacio Ibrahim. All rights reserved.
 -->
 
-<link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/iron-list/iron-list.html">
-<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="bower_components/neon-animation/neon-animatable-behavior.html">
-<link rel="import" href="bower_components/neon-animation/animations/slide-from-left-animation.html">
-<link rel="import" href="bower_components/neon-animation/animations/slide-left-animation.html">
-
-<link rel="import" href="bower_components/paper-item/paper-icon-item.html">
-<link rel="import" href="bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="bower_components/iron-icons/social-icons.html">
-<!-- app -->
-<link rel="import" href="bower_components/sc-timeago/sc-timeago.html">
-
 <!--
 An element providing a solution to no problem in particular.
 
@@ -60,7 +46,7 @@ Example:
         padding-left: 8px;
         padding-right: 6px;
         cursor: pointer;
-        height: 90px;
+        min-height: 80px;
         text-overflow: ellipsis;
       }
       .content {
@@ -74,7 +60,7 @@ Example:
         text-align: center;
       }
       .more iron-icon {
-        margin-top: 26px;
+        margin-top: 36px;
         color: rgba(0,0,0, .30);
       }
       /* hover for desktop */
@@ -101,7 +87,7 @@ Example:
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 1em;
-        font-weight: 300;
+        font-weight: 500;
       }
       .service-item-subheader span, .service-item-subheader div {
         padding: 5px 10px 5px 0px;
@@ -111,6 +97,8 @@ Example:
         margin-top: -5px;
       }
       .service-counter {
+        position: absolute;
+        right: 0;
         font-size: 13px;
         width: 22px;
         height: 18px;
@@ -141,13 +129,13 @@ Example:
         color: rgba(0,0,0,0.38);
       }
       .avatarBox {
-        float:right;
+        float:left;
         width: 32px;
         height: 32px;
-        -webkit-border-radius: 6px; /* Can also be 55px */
-        -moz-border-radius: 6px;
-        border-radius: 6px;
-        margin-right: 6px;
+        -webkit-border-radius: 50%; /* Can also be 55px */
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        margin-right: 0px;
         @apply(--layout-flex);
         @apply(--layout-flex-1);
        }
@@ -158,11 +146,11 @@ Example:
       .avatarBox img {
         width: 32px;
         height: 32px;
-        -webkit-border-radius: 6px; /* Can also be 50px */
-        -moz-border-radius: 6px;
-        border-radius: 6px;
+        -webkit-border-radius: 50%; /* Can also be 50px */
+        -moz-border-radius: 50%;
+        border-radius: 50%;
         opacity: 0.8;
-        float: right;
+        float: left;
         right: 0;
        }
        #dialog {
@@ -199,8 +187,9 @@ Example:
               <!-- div header -->
               <div class="content" on-tap="selectItem">
                   <div class="service-item-headers service-item-header">
-                    <div><div class="service-counter new-message">[[item.opened_ticket]]</div></div>
                     <div class="flexchild"><h3>[[item.service]]</h3></div>
+                    <!-- TODO: create method to add new-message class -->
+                    <div><div class="service-counter">[[item.opened_ticket]]</div></div>
                   </div>
                   <!-- div subheader -->
                   <div class="service-item-headers service-item-subheader">
@@ -212,14 +201,14 @@ Example:
                   </div>
                   <!-- div message -->
                   <div class="service-item-body">
-                    <div class="service-item-body-content">
-                      [[item.lastMessage.body]]
-                    </div>
                     <template is="dom-if" if="{{item.lastMessage.user.avatar}}">
                       <div class="avatarBox">
                         <img src="[[item.lastMessage.user.avatar]]">
                       </div>
-                    </template>
+                    </template>                      
+                    <div class="service-item-body-content">
+                      [[item.lastMessage.body]]
+                    </div>
                   </div>
               </div>
               <!-- menu more options -->
@@ -299,6 +288,7 @@ Example:
        *
        */
       _selectItem: function(e){
+        var hashtag = e.model.item.hashtag;
         // if new selected item was already prevously selected
         // we must unselect it. ELSE ..
         // to select new item and fire 'home-selected' event.
@@ -308,7 +298,12 @@ Example:
             this._computedClass(false);
         } else {
             this.$.itemsList.selectItem(e.model.item);
-            this.fire('home-selected');
+            //this.fire('home-selected');
+            // normalize
+            if (hashtag.startsWith('#')) {
+              hashtag = hashtag.substr(1);
+            }
+            window.location.href = '#/feeds/' + hashtag;
         }
       },
       unselect: function() {

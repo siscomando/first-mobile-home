@@ -1,14 +1,4 @@
 
-<link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="bower_components/paper-input/paper-input.html">
-<link rel="import" href="bower_components/paper-input/paper-textarea.html">
-
-<!-- app -->
-<link rel="import" href="sc-feeds.html">
-
-
 <dom-module id="sc-main-page">
 <template>
 <style>
@@ -80,7 +70,7 @@
     bottom: 0;
   }
   #backAllMessagesBtn {
-    display: none;
+    display: block;
   }
   @media (min-width: 768px) and (orientation: landscape) {
     #container div#mainContent {
@@ -101,7 +91,9 @@
   <!-- begin: main content div -->
     <paper-toolbar>
       <!-- backHome eh paliativo, o ideal eh colocar quando fechar o drawer sempre voltar para home. -->
-      <paper-icon-button id="inboxBtn" icon="inbox" on-tap="backHome" paper-drawer-toggle></paper-icon-button>
+      <!--
+      <paper-icon-button id="inboxBtn" icon="inbox" on-tap="backHome" paper-drawer-toggle></paper-icon-button> -->
+
       <paper-icon-button id="backAllMessagesBtn" on-tap="backAllMessages" icon="chevron-left"></paper-icon-button>
       <span id="mainTitle" class="title">{{titleSection}}</span>
       <!-- hide/show -->
@@ -115,9 +107,11 @@
     </paper-toolbar>
 
     <div id="mainContent">
+      <!-- rowOne contains the feeds updates -->
       <div class="rowOne">
             <sc-feeds id="mainFeeds"></sc-feeds>
       </div>
+      <!-- rowTwo contains the input to send messages -->
       <div class="rowTwo">
         <div class="bottomInput">
           <paper-textarea flex class="short" label="O que você pode resolver..." id="inputLikeZap">
@@ -163,7 +157,7 @@
           self.previousSelectedItem = feeds.hashtag;
           // now's change
           feeds.hashtag = item.target_hashtag;
-          self.toggleMainBtn(true); // changes btn inbox to back (chevron)
+          // self.toggleMainBtn(true); // changes btn inbox to back (chevron)
         }
       });
 
@@ -198,24 +192,17 @@
     /** `toggleMainBtn` toggle inboxBtn or backAllMessagesBtn
     * @param `forward`: if `true` toggle disabled and only back
     * btn is showed.
-    */
+
     toggleMainBtn: function (forward) {
       var inboxBtn = this.$.inboxBtn;
       var backAllMessagesBtn = this.$.backAllMessagesBtn;
-
       if (forward === true) {
-          inboxBtn.style.display = 'none';
+          // inboxBtn.style.display = 'none';
           backAllMessagesBtn.style.display = 'block';
       } else {
-          if (inboxBtn.style.display == 'none') {
-            inboxBtn.style.display = 'block';
-            backAllMessagesBtn.style.display = 'none';
-          } else {
-            inboxBtn.style.display = 'none';
-            backAllMessagesBtn.style.display = 'block';
-          }
+          backAllMessagesBtn.style.display = 'none';
       }
-    },
+    },*/
     clearInput: function() {
       this.$.inputWithButton.value = '';
       this.toggleClick();
@@ -230,14 +217,18 @@
     backAllMessages: function() {
      // We basically to change hashtag from sc-feeds
      var feeds = this.$.mainFeeds;
-     feeds.hashtag = this.previousSelectedItem;
+
      if (this.previousSelectedItem) {
+        // subitem was previously opened. because back to system.
+        feeds.hashtag = this.previousSelectedItem;
         this.titleSection = this.previousSelectedItem;
-        this.previousSelectedItem = null;
+        this.previousSelectedItem = null; // reset hierarchy
      } else {
+        // or back to init page with all updates. BUT, now (7JAN16) we to change
+        // for to open drawer. It'll be home.
         this.titleSection = 'All';
         feeds.hashtag = 'all';
-        this.toggleMainBtn();
+        //this.toggleMainBtn();
         this.fire('home-unselect');
      }
    },
