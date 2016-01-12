@@ -9,12 +9,21 @@
         <app-router id="router" class="flex">
           <app-route path="/" import="/elements/pages/page-home.html"></app-route>
             <app-route path="/feeds/:hashtag" import="/elements/pages/page-feeds.html"></app-route>
+            <!-- bindRouter onUrlChange="updateModel" -->
+            <app-route path="/search" import="/elements/pages/page-search.html"></app-route>
           <app-route path="*" import="/elements/pages/page-not-found.html"></app-route>
         </app-router>
   </template>
 </dom-module>
 <script>
   Polymer({
-    is: 'sc-shell'
+    is: 'sc-shell',
+    listeners: {
+      'nav': 'handleNav'
+    },
+    handleNav: function(_, nav) {
+      this.$.router.go(nav.url);
+    }      
+      
   });
 </script>

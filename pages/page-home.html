@@ -35,7 +35,13 @@
   </template>
   <script>
     Polymer({
-      is: 'page-home'
+      is: 'page-home',
+      listeners: {
+          'nav': 'handleNav'
+      },
+      handleNav: function() {
+          console.log('gogogogogo!');
+      }
     });
   </script>
 </dom-module>

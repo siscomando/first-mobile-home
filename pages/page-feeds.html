@@ -78,9 +78,9 @@
           <paper-header-panel drawer class="drawer">
             <!-- header -->
             <paper-toolbar>
-              <iron-icon icon="menu" on-tap="showProfile"></iron-icon>
+              <iron-icon icon="chevron-left" on-tap="_historyBack"></iron-icon>
               <div class="title">{{title}}</div>
-              <app-bar class="horizontal layout center end-justified" query="{{q}}"></app-bar>
+              <app-bar class="horizontal layout center end-justified" no-search></app-bar>
             </paper-toolbar>
             <!-- content -->
             <div class="container-feeds">
@@ -102,7 +102,6 @@
           <!------------------------------
            ----- who is main class -----
            ------------------------------->
-
     </drawer-panel-layout>
 
   </template>
@@ -126,7 +125,10 @@
       },
       _title: function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-      }        
+      },
+      _historyBack: function() {
+        history.back();
+    }
     });
   </script>
 </dom-module>
