@@ -18,11 +18,11 @@
       }
 
       .container-feeds { /* the default is mobile */
-        @apply(--layout-vertical);
+        /* @apply(--layout-vertical);  commnet due Safari not applying height 100% */
         width: 100%;
         height: 100%;
       }
-      .container-feeds .rowOne {
+      .container-feeds .rowOne, div.rowOne {
         positon: absolute;
         height: 100%;
         overflow-y: scroll;
@@ -63,8 +63,12 @@
             height: 100%;
             overflow-y: scroll;
         }
-        .container-feeds .rowOne {
-          @apply(--layout-flex);
+        .container-feeds .rowOne, div.rowOne {
+          positon: absolute;
+          height: 100%;
+          width: 100%;
+          overflow-y: scroll; 
+          padding-top: 10px;
           padding-left: 5px;
           padding-right: 40px;
           padding-bottom: 100px;
