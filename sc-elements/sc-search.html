@@ -13,7 +13,7 @@ Example:
 Example:
 
     <sc-search data=[[results]]>
-      
+
     </sc-search>
 -->
 <dom-module id="sc-search">
@@ -29,12 +29,11 @@ Example:
             }
             .container {
                 margin-top: 2px;
-                
-            }          
+            }
             paper-card {
               width: 100%;
               cursor: pointer;
-            } 
+            }
             .card-content {
                 padding-bottom: 30px;
             }
@@ -72,7 +71,7 @@ Example:
             .pink {
                 --paper-card-header-color: var(--paper-pink-500);
             }
-            
+
         </style>
         <div class="container">
             <iron-list id="list-results" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
@@ -90,16 +89,16 @@ Example:
                           </template>
                           <template is="dom-if" if="{{!item.following}}">
                             <div><small>;) você não está seguindo este assunto.</small></div>
-                          </template>                            
-                        </div>                          
-                      </div>      
+                          </template>
+                        </div>
+                      </div>
                       <paper-ripple></paper-ripple>
-                    </paper-card>     
+                    </paper-card>
                 </template>
             </iron-list>
         </div>
     </template>
-    
+
     <script>
         Polymer({
             is: 'sc-search',
@@ -116,10 +115,10 @@ Example:
                             {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao'},
                             {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao'},
                             {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao',
-                            following:true}]                    
+                            following:true}]
                         }
                 }
-            }, //properties closed     
+            }, //properties closed
             mSelect: function(e) {
                 // Se o target for checkbox deixa ele trabalhar...normalmente.
                 if (e.target.classList.contains('paper-checkbox')) {
@@ -151,5 +150,5 @@ Example:
                 return undefined; // returns an Array []
             }
         });
-    </script>    
+    </script>
 </dom-module>

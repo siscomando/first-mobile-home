@@ -1,10 +1,10 @@
-<!-- polymer project components -->
-<link rel="import" href="/elements/bower_components/paper-header-panel/paper-header-panel.html">
-<link rel="import" href="/elements/bower_components/paper-toolbar/paper-toolbar.html">
-<!-- for this components -->
-<link rel="import" href="/elements/app-bar/app-bar.html">
-<!-- layout -->
-<link rel="import" href="/elements/layouts/drawer-panel-layout.html">
+<!-- polymer project components 
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">-->
+<!-- for this components
+<link rel="import" href="../app-bar/app-bar.html">-->
+<!-- layout 
+<link rel="import" href="../layouts/drawer-panel-layout.html">-->
 
 <dom-module id="page-search">
   <template>
@@ -51,7 +51,7 @@
         #search input::-webkit-search-cancel-button{
           position: relative;
           right: 15px;
-        }           
+        }
     </style>
     <drawer-panel-layout>
           <!-- who is drawer class -->
@@ -60,11 +60,11 @@
               <iron-icon icon="chevron-left" on-tap="_historyBack"></iron-icon>
               <div class="title">Siscomando</div>
               <app-bar class="horizontal layout center end-justified" no-search></app-bar>
-            </paper-toolbar> 
+            </paper-toolbar>
             <div id="search" class="layout horizontal center">
                 <iron-icon icon="search"></iron-icon>
                 <input id="query" type="search" autocomplete="off" value="{{q::keyup}}" placeholder="Pesquise por sistemas, pessoas, assuntos..." class="flex" on-search="onSearch">
-            </div>                
+            </div>
             <!-- search items -->
             <sc-search></sc-search>
           </paper-header-panel>
@@ -78,7 +78,7 @@
     Polymer({
       is: 'page-search',
       properties: {
-          q: {type: String, notify: true, value: '', observer: '_qChanged'},          
+          q: {type: String, notify: true, value: '', observer: '_qChanged'},
       },
       _historyBack: function() {
           history.back();
@@ -93,12 +93,12 @@
             this.$.query.setSelectionRange(q.length, q.length);
           });
         }
-      },        
+      },
       onSearch: function(e) {
         // when a user clicks on the (x) button we need to be sure to
         // clear the query
         this.q = this.$.query.value;
-      }        
+      }
     });
   </script>
 </dom-module>

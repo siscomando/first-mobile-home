@@ -36,7 +36,8 @@ Example:
       .list-container {
         height: 100%;
         width: 100%;
-        overflow-y: scroll;
+        /* overflow-y: scroll; vulcanized problems */
+          
         -webkit-transition-delay: 2s;
         transition-delay: 2s;
         -webkit-transition: 2s border linear,3s background-color linear;
@@ -181,11 +182,7 @@ Example:
       }
     </style>
 
-    <iron-ajax
-      url="/demo/data_home.json"
-      on-response="ajaxResponse"
-      handle-as="json"
-      auto></iron-ajax>
+    <sc-remote id="remote"></sc-remote>
     <!-- Start: html common -->
     <div class="list-container">
       <iron-list id="itemsList" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
@@ -282,9 +279,17 @@ Example:
       },
 
       // Element Lifecycle
-      // ...
+      ready: function () {
+          var self = this;
+          var scRemote = this.$.remote;
+          scRemote.get('home');
+          scRemote.addEventListener('remote', function(e){
+             self.documents = e.detail.data;
+          });
+      },
       // Ajax response
       ajaxResponse: function(event) {
+          // DEPRECATED
           this.documents = event.detail.response;
       },
       // Selection Behavior
@@ -307,7 +312,7 @@ Example:
             this.$.itemsList.selectItem(e.model.item);
             //this.fire('home-selected');
             // normalize
-            if (hashtag.startsWith('#')) {
+            if (hashtag.slice(0, 1) === '#') {
               hashtag = hashtag.substr(1);
             }
             window.location.href = '#/feeds/' + hashtag;

@@ -309,7 +309,7 @@ Example:
       /** mock function for development
       */
       _setUrl: function(hashtag) {
-          var base_url = "/demo/data_feeds_"; // #CHANGED: relative path
+          var base_url = siscomando.REMOTE_ADDR + "data_feeds_"; // #CHANGED: relative path
           var hashtag = hashtag ? hashtag : 'all';
           var format = ".json";
           var url = base_url + this._normalizeHashtag(hashtag) + format;
@@ -322,7 +322,7 @@ Example:
           // lower case
           var hashtag = hashtag.toLowerCase();
           // remove #
-          if (hashtag.startsWith('#')) {
+          if (hashtag.slice(0, 1) === '#') {
               hashtag = hashtag.substr(1);
           }
           return hashtag;

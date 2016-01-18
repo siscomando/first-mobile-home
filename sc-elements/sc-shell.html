@@ -1,29 +1,28 @@
 <!-- Attention: This is first element called so we need import directly here -->
-<link rel="import" href="/elements/bower_components/polymer/polymer.html">
-<link rel="import" href="/elements/bower_components/app-router/app-router.html">
+<!-- <link rel="import" href="../bower_components/polymer/polymer.html"> -->
 
 <dom-module id="sc-shell">
-  <style>
-  </style>
   <template>
+        <!-- bindRouter onUrlChange="updateModel" -->
         <app-router id="router" class="flex">
-          <app-route path="/" import="/elements/pages/page-home.html"></app-route>
-            <app-route path="/feeds/:hashtag" import="/elements/pages/page-feeds.html"></app-route>
-            <!-- bindRouter onUrlChange="updateModel" -->
-            <app-route path="/search" import="/elements/pages/page-search.html"></app-route>
-          <app-route path="*" import="/elements/pages/page-not-found.html"></app-route>
+          <app-route path="/" element="page-home"></app-route>
+          <app-route path="/**/www/index.html" element="page-home"></app-route>
+          <app-route path="/feeds/:hashtag" element="page-feeds"></app-route>
+
+          <app-route path="/search" element="page-search"></app-route>
+          <app-route path="*" element="page-not-found"></app-route>
         </app-router>
   </template>
+  <script>
+    Polymer({
+      is: 'sc-shell',
+      listeners: {
+        'nav': 'handleNav'
+      },
+      handleNav: function(_, nav) {
+        this.$.router.go(nav.url);
+      }
+
+    });
+  </script>
 </dom-module>
-<script>
-  Polymer({
-    is: 'sc-shell',
-    listeners: {
-      'nav': 'handleNav'
-    },
-    handleNav: function(_, nav) {
-      this.$.router.go(nav.url);
-    }      
-      
-  });
-</script>
