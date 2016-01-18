@@ -74,22 +74,32 @@ Example:
 
         </style>
         <div class="container">
-            <iron-list id="list-results" items="{{documents}}" as="item" selected-item="{{selectedItem}}">
+            <iron-list id="list-results" items="{{documents}}" as="item" multi-selection="true"
+            selection-enabled>
                 <template>
-                    <paper-card class="pink fancy" on-tap="mSelect">
+                    <paper-card
+                      aria-label$="[[_getAriaLabel(item, selected)]]" class$="[[_computedClass(selected)]]"
+                      on-tap="mSelect">
                       <div class="card-content">
                         <div class="checkbox">
+                          <template is="dom-if" if="{{item.following}}">
+                            <paper-checkbox noink checked></paper-checkbox>
+                          </template>
+                          <template is="dom-if" if="{{!item.following}}">
                             <paper-checkbox noink></paper-checkbox>
+                          </template>
                         </div>
                         <div class="title">
-                          <div class="medium">Title</div>
-                          <div class="small">Sistema de diárias e passagens do MPOG</div>
-                          <template is="dom-if" if="{{item.following}}">
-                            <div><small>;) você está seguindo este assunto.</small></div>
+                          <div class="medium">[[item.title]]</div>
+                          <div class="small">[[item.message]]</div>
+                          <!-- <template is="dom-if" if="{{item.following}}">
+                            <div><small>Oappapap</small></div>
                           </template>
                           <template is="dom-if" if="{{!item.following}}">
                             <div><small>;) você não está seguindo este assunto.</small></div>
-                          </template>
+                          </template>-->
+                          <div><small>[[_computedStatus(selected)]]</small></div>
+
                         </div>
                       </div>
                       <paper-ripple></paper-ripple>
@@ -112,14 +122,22 @@ Example:
                         return [{title:'Polymer System', message: 'Conteudo que pode ser previa descricao'},
                             {title:'Expresso System', message: 'Conteudo que pode ser previa descricao'},
                             {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao'},
-                            {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao'},
-                            {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao'},
-                            {title:'BI Corporativo', message: 'Conteudo que pode ser previa descricao',
+                            {title:'AIM', message: 'Conteudo que pode ser previa descricao'},
+                            {title:'IRPF INFRA', message: 'Conteudo que pode ser previa descricao'},
+                            {title:'Sinesp', message: 'Conteudo que pode ser previa descricao',
                             following:true}]
                         }
+                },
+                selectedItems: {
+                  type: Object
                 }
             }, //properties closed
             mSelect: function(e) {
+                var listResults = this.querySelector('#list-results');
+                console.log(e.model.item);
+                console.log(e.model.selectedItems);
+                console.log(e.model);
+                console.log(listResults.selectedItems);
                 // Se o target for checkbox deixa ele trabalhar...normalmente.
                 if (e.target.classList.contains('paper-checkbox')) {
                     return ;
@@ -129,7 +147,18 @@ Example:
                     // selecionar o checkbox
                     checkbox = parent.querySelector('paper-checkbox');
                     checkbox.active = !checkbox.active;
+                    e.model.item.following = checkbox.active;
                 }
+            },
+            _computedClass: function(isSelected) {
+              var classes = 'pink fancy';
+              if (isSelected) {
+                classes += ' selected';
+              }
+              return classes;
+            },
+            _getAriaLabel: function(item, selected) {
+              return selected ? 'Deselect ' + item.title : 'Select ' + item.title;
             },
             _getParent: function(el, byClass) {
                 var p = el.parentNode;
@@ -148,6 +177,13 @@ Example:
                     p = o.parentNode;
                 }
                 return undefined; // returns an Array []
+            },
+            _computedStatus: function(selected){
+                if (selected) {
+                    return ';) você está seguindo este assunto.';
+                } else {
+                    return ':/ você não está seguindo este assunto.';
+                }
             }
         });
     </script>
