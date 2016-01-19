@@ -168,7 +168,7 @@ Example:
     color: #777;
     border-left: 4px solid #ddd;
   }
-  @media (min-width: 768px) and (orientation: landscape) {  
+  @media (min-width: 768px) and (orientation: landscape) {
     .message-item-container {
       padding-left: 10px;
     }
@@ -309,7 +309,7 @@ Example:
       /** mock function for development
       */
       _setUrl: function(hashtag) {
-          var base_url = siscomando.REMOTE_ADDR + "data_feeds_"; // #CHANGED: relative path
+          var base_url = siscomando.url.feeds + "data_feeds_"; // #CHANGED: relative path
           var hashtag = hashtag ? hashtag : 'all';
           var format = ".json";
           var url = base_url + this._normalizeHashtag(hashtag) + format;
@@ -369,13 +369,13 @@ Example:
        */
       _selectItem: function(e){
         this.$.itemsList.selectItem(e.model.message);
-          // this.fire('feed-selected', {message: e.model.message});  
+          // this.fire('feed-selected', {message: e.model.message});
         if ('target_hashtag' in e.model.message) {
-          // Nows we sure that back history 
+          // Nows we sure that back history
           window.location.href = '#/feeds/' + e.model.message.target_hashtag;
           // ativar botao voltar
         }
-          
+
       }
     });
   </script>
