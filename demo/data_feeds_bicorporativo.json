@@ -1,7 +1,4 @@
-{
-    "hashtag": "bicorporativo",
-    "type": "system",
-    "items": [
+
             {
               "announcer": "mauro.naves",
               "timestamp": 1447183050,
@@ -9,7 +6,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/70.jpg",
               "target": "2015RI/00000145",
-              "target_hashtag": "2015RI00000145"
+              "target_hashtag": "2015RI00000145",
+                "hashtag": "bicorporativo",
+                "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -18,7 +17,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -28,7 +29,9 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
-              "continued": true
+              "continued": true,
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -38,7 +41,9 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
-              "continued": true
+              "continued": true,
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "ana.nias",
@@ -46,7 +51,9 @@
               "body": "Para os dados dessa hipótese não é possível um regressão linear. É preciso uma função sigmoid.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/81.jpg",
-              "target": "2015RI/00000245"
+              "target": "2015RI/00000245",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "mato.grosso",
@@ -64,7 +71,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/82.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+                  "hashtag": "bicorporativo",
+    "type": "system
             },
             {
               "announcer": "anna.leticia.suply",
@@ -73,7 +82,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/83.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "horacio.moreira",
@@ -81,7 +92,9 @@
               "body": "Os entregáveis já foram produzidos. Agora vamos implementar em ambiente controlado para em seguida subir para a produção nos servidores da SUPCD.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/71.jpg",
-              "target": "2015RI/00000145"
+              "target": "2015RI/00000145",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "bety.boop",
@@ -89,7 +102,9 @@
               "body": "Realmente somente uma função sigmoid com variáveis polinomiais podemos ter uma boundary decision efetivo.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/84.jpg",
-              "target": "2015RI/00000245"
+              "target": "2015RI/00000245",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "mauro.naves",
@@ -98,7 +113,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/70.jpg",
               "target": "2015RI/00000145",
-              "target_hashtag": "2015RI00000145"
+              "target_hashtag": "2015RI00000145",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -107,7 +124,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -117,7 +136,9 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
-              "continued": true
+              "continued": true,
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "delcidio.malta",
@@ -127,7 +148,9 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
-              "continued": true
+              "continued": true,
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "ana.nias",
@@ -135,7 +158,9 @@
               "body": "Para os dados dessa hipótese não é possível um regressão linear. É preciso uma função sigmoid.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/81.jpg",
-              "target": "2015RI/00000245"
+              "target": "2015RI/00000245",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "mato.grosso",
@@ -144,7 +169,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/2.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "ana.thereza",
@@ -153,7 +180,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/82.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "anna.leticia.suply",
@@ -162,7 +191,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/83.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "horacio.moreira",
@@ -170,7 +201,9 @@
               "body": "Os entregáveis já foram produzidos. Agora vamos implementar em ambiente controlado para em seguida subir para a produção nos servidores da SUPCD.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/71.jpg",
-              "target": "2015RI/00000145"
+              "target": "2015RI/00000145",
+    "hashtag": "bicorporativo",
+    "type": "system              
             },
             {
               "announcer": "bety.boop",
@@ -178,7 +211,7 @@
               "body": "Realmente corrigido uma função sigmoid com variáveis polinomiais podemos ter uma boundary decision efetivo.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/84.jpg",
-              "target": "2015RI/00000245"
+              "target": "2015RI/00000245",
+    "hashtag": "bicorporativo",
+    "type": "system              
             }
-          ]
-}
