@@ -8,7 +8,9 @@
               "body": "Precisamos atualizar urgentemente o Siscomando",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
-              "target": "2015RI/00000045"
+              "target": "2015RI/00000045",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "marta.suply",
@@ -16,7 +18,9 @@
               "body": "Problemas de lentidão no e-social. ",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
-              "target": "2015RDP/00000005"
+              "target": "2015RDP/00000005",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "presaclicked",
@@ -24,7 +28,9 @@
               "body": "Expresso Serpro com lentidão no acesso Web.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
-              "target": "2015RI/00000145"
+              "target": "2015RI/00000145",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "japaness",
@@ -32,7 +38,9 @@
               "body": "Estamos verificando o problema do e-social. Acompanhe aqui.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
-              "target": "2015RDP/00000005"
+              "target": "2015RDP/00000005",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "japaness",
@@ -40,7 +48,9 @@
               "body": "O chamado foi encaminhado para a SUPOP. Já tá na mão do responsável.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/1.jpg",
-              "target": "2015RDP/00000005"
+              "target": "2015RDP/00000005",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "marta.suply",
@@ -48,7 +58,9 @@
               "body": "A @japaness já deu uma olhada e encaminhou o chamado.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/88.jpg",
-              "target": "2015RDP/00000005"
+              "target": "2015RDP/00000005",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "horacio.moreira",
@@ -56,7 +68,9 @@
               "body": "Os entregáveis já foram produzidos. Agora vamos implementar em ambiente controlado para em seguida subir para a produção nos servidores da SUPCD.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/men/78.jpg",
-              "target": "2015RI/00000045"
+              "target": "2015RI/00000045",
+              "hashtag": "sccd",
+              "type": "system"
             },
             {
               "announcer": "presaclicked",
@@ -64,7 +78,9 @@
               "body": "Encaminhado para @fabio.link em Porto Alegre. O mesmo disse que vai implementar uma rotina para evitar o problema se repetir.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/35.jpg",
-              "target": "2015RI/00000145"
+              "target": "2015RI/00000145",
+              "hashtag": "sccd",
+              "type": "system"
             }
           ]
 }
