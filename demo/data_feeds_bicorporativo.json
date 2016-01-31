@@ -8,7 +8,7 @@
               "target": "2015RI/00000145",
               "target_hashtag": "2015RI00000145",
                 "hashtag": "bicorporativo",
-                "type": "system              
+                "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -19,7 +19,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -31,7 +31,7 @@
               "target_hashtag": "2015RDP00000015",
               "continued": true,
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -43,7 +43,7 @@
               "target_hashtag": "2015RDP00000015",
               "continued": true,
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "ana.nias",
@@ -53,7 +53,7 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/81.jpg",
               "target": "2015RI/00000245",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "mato.grosso",
@@ -62,7 +62,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/2.jpg",
               "target": "2015RDP/00000015",
-              "target_hashtag": "2015RDP00000015"
+              "target_hashtag": "2015RDP00000015",
+                  "hashtag": "bicorporativo",
+    "type": "system"              
             },
             {
               "announcer": "ana.thereza",
@@ -73,7 +75,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
                   "hashtag": "bicorporativo",
-    "type": "system
+    "type": "system"
             },
             {
               "announcer": "anna.leticia.suply",
@@ -84,7 +86,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "horacio.moreira",
@@ -94,7 +96,7 @@
               "image": "https://randomuser.me/api/portraits/thumb/men/71.jpg",
               "target": "2015RI/00000145",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "bety.boop",
@@ -104,7 +106,7 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/84.jpg",
               "target": "2015RI/00000245",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"             
             },
             {
               "announcer": "mauro.naves",
@@ -115,7 +117,7 @@
               "target": "2015RI/00000145",
               "target_hashtag": "2015RI00000145",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -126,7 +128,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -138,7 +140,7 @@
               "target_hashtag": "2015RDP00000015",
               "continued": true,
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "delcidio.malta",
@@ -150,7 +152,7 @@
               "target_hashtag": "2015RDP00000015",
               "continued": true,
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "ana.nias",
@@ -160,7 +162,7 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/81.jpg",
               "target": "2015RI/00000245",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "mato.grosso",
@@ -171,7 +173,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "ana.thereza",
@@ -182,7 +184,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "anna.leticia.suply",
@@ -193,7 +195,7 @@
               "target": "2015RDP/00000015",
               "target_hashtag": "2015RDP00000015",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"             
             },
             {
               "announcer": "horacio.moreira",
@@ -203,7 +205,7 @@
               "image": "https://randomuser.me/api/portraits/thumb/men/71.jpg",
               "target": "2015RI/00000145",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             },
             {
               "announcer": "bety.boop",
@@ -213,6 +215,6 @@
               "image": "https://randomuser.me/api/portraits/thumb/women/84.jpg",
               "target": "2015RI/00000245",
     "hashtag": "bicorporativo",
-    "type": "system              
+    "type": "system"              
             }
             ]
