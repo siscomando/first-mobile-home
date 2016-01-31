@@ -9,6 +9,8 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015"
+              "hashtag": "2015RDP00000015",
+              "type": "issue"              
             },
             {
               "announcer": "delcidio.malta",
@@ -17,7 +19,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
-              "continued": true
+              "continued": true,
+              "hashtag": "2015RDP00000015",
+              "type": "issue"                
             },
             {
               "announcer": "delcidio.malta",
@@ -26,7 +30,9 @@
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
               "target": "2015RDP/00000015",
-              "continued": true
+              "continued": true,
+              "hashtag": "2015RDP00000015",
+              "type": "issue"                
             },
             {
               "announcer": "mato.grosso",
@@ -34,7 +40,9 @@
               "body": "Estamos verificando o problema do e-social. Acompanhe aqui.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/2.jpg",
-              "target": "2015RDP/00000015"
+              "target": "2015RDP/00000015",
+              "hashtag": "2015RDP00000015",
+              "type": "issue"                
             },
             {
               "announcer": "ana.thereza",
@@ -42,7 +50,9 @@
               "body": "O chamado foi encaminhado para a SUPOP. Já tá na mão do responsável.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/82.jpg",
-              "target": "2015RDP/00000015"
+              "target": "2015RDP/00000015",
+              "hashtag": "2015RDP00000015",
+              "type": "issue"                
             },
             {
               "announcer": "anna.leticia.suply",
@@ -50,7 +60,9 @@
               "body": "A @japaness já deu uma olhada e encaminhou o chamado.",
               "has_avatar": true,
               "image": "https://randomuser.me/api/portraits/thumb/women/83.jpg",
-              "target": "2015RDP/00000015"
+              "target": "2015RDP/00000015",
+              "hashtag": "2015RDP00000015",
+              "type": "issue"                
             }
           ]
 }
